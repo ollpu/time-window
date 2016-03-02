@@ -55,3 +55,6 @@ group :development do
     gem 'capistrano-bundler', require: false
     gem 'capistrano3-puma',   require: false
 end
+
+# Google Webfonts
+gem 'google-webfonts-rails', '~> 0.0.4'
