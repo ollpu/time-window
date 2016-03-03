@@ -8,12 +8,20 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => 'reload' %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= google_webfonts_init({
-      google: ["Noto Sans"]
+      google: ["Noto Sans", "Material Icons"]
     }) %>
   </head>
 
   <body>
-    
-    <%= yield %>
+    <header>
+      <nav>
+        <a id="menu" class="material-icons">menu</a>
+        <%= link_to 'Start', index_path %>
+        <%= link_to 'Shows', shows_path %>
+      </nav>
+    </header>
+    <div class="content">
+      <%= yield %>
+    </div>
   </body>
 </html>

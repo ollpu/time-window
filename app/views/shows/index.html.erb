@@ -1,0 +1,10 @@
+<%= link_to 'Create new show', new_show_path %>
+<div class="show-list">
+  <% if @shows.empty? %>
+    There's nothing here...
+  <% else %>
+    <% @shows.each do |show| %>
+      <%= link_to show.title, show_path(show) %>
+    <% end %>
+  <% end %>
+</div>

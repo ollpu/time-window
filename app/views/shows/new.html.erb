@@ -1,0 +1,13 @@
+
+<%= form_for @show do |f| %>
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+  <div>
+    <%= f.submit 'Create' %>
+  </div>
+  <% @show.parts.each do |part| %>
+    <%= text_field_tag "names[]", part[:name] %>
+  <% end %>
+<% end %>
