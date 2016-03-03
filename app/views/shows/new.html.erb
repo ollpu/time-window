@@ -1,13 +1,36 @@
 
 <%= form_for @show do |f| %>
   <div>
-    <%= f.label :title %>
+    <%= f.label :title, 'Title:' %>
     <%= f.text_field :title %>
   </div>
+  Parts:
+  <br/><table id="new-show-parts">
+    <thead>
+      <th></th>
+      <th>Name</th>
+      <th>Duration</th>
+    </thead>
+    <tbody>
+      <% @show.parts.each do |part| %>
+        <tr class="part">
+          <td><%= link_to 'drag_handle', '', class: 'material-icons show-part-drag-handle' %></td>
+          <td><%= text_field_tag "show[names[]]", part[:name], {id: nil, class: "show_part_name"} %></td>
+          <td><%= text_field_tag "show[times[]]", part[:time], {id: nil, class: "show_part_time"} %><7td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table></br>
+  <%= link_to 'Add new part', '', id: 'new-show-add-part' %>
   <div>
     <%= f.submit 'Create' %>
   </div>
-  <% @show.parts.each do |part| %>
-    <%= text_field_tag "names[]", part[:name] %>
-  <% end %>
 <% end %>
+
+<div class="data" id="new-show-part-template" data-names-field='
+<tr class="part">
+  <td><%= link_to "drag_handle", "", class: "material-icons show-part-drag-handle" %></td>
+  <td><%= text_field_tag "show[names[]]", "", {id: nil, class: "show_part_name"} %></td>
+  <td><%= text_field_tag "show[times[]]", "00:00:00", {id: nil, class: "show_part_time"} %></td>
+</tr>
+'></div>

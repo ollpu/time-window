@@ -1,3 +1,26 @@
 // Place all the styles related to the Shows controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.show_part_time {
+  width: 5em;
+}
+
+
+#new-show-parts {
+  border: 1px solid black;
+  border-radius: 0.2em;
+  display: inline-block;
+  min-width: 16em;
+  min-height: 1em;
+  max-height: 80%;
+  th {
+    text-align: left;
+  }
+  
+  .show-part-drag-handle {
+    color: black;
+    pointer-events: none;
+  }
+}
