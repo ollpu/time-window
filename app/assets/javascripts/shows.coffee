@@ -4,11 +4,16 @@
 
 show_part_time_hooks = ->
   # Hooks for the drag handle
-  handle = $('.show-part-drag-handle')
+  handle = $('.show-part-action')
   handle.unbind('click')
   handle.click (e) ->
     e.preventDefault()
   handle.attr('tabindex', -1)
+  
+  $('.show-part-delete').unbind('click');
+  $('.show-part-delete').click (e) ->
+    e.preventDefault()
+    $(this).parent().parent().remove()
   
   # When a time-field is blurred (focused out of), it's format will be parsed
   # and then output again, creating a uniform format of notation and fixing any
@@ -47,6 +52,7 @@ load = ->
   $('#new-show-parts tbody').sortable({
     axis: 'y'
   })
+  
   
 # Turbolinks
 $(document).on('turbolinks:load', load)
