@@ -2,6 +2,40 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+# This whole blob needs a lot of tidying!
+
+parse_time_t = (str) ->
+  str = "" + str # Convert to string
+  components = str.replace(/[^0-9:]/g, '').split(":")
+  # Unify duration format
+  t = [0,0,0]
+  s = components.length
+  t[2] = parseInt(components[s-1]) if components[s-1]?
+  t[2] = 0 if isNaN(t[2])
+  t[1] += Math.floor(t[2]/60)
+  t[2] = t[2]%60
+  t[1] += parseInt(components[s-2]) if components[s-2]?
+  t[1] = 0 if isNaN(t[1])
+  t[0] += Math.floor(t[1]/60)
+  t[1] = t[1]%60
+  t[0] += parseInt(components[s-3]) if components[s-3]?
+  t[0] = 0 if isNaN(t[0])
+  t
+
+time_seconds = (t) ->
+  (t[0]*60+t[1])*60+t[2]
+
+twoDigit = (num) ->
+  if num > 9
+    return "" + num
+  else
+    return "0" + num
+
+time_string = (t) ->
+  twoDigit(t[0]) + ":" + twoDigit(t[1]) + ":" + twoDigit(t[2])
+
+  
+
 show_part_time_hooks = ->
   # Hooks for the drag handle
   handle = $('.show-part-action')
@@ -20,26 +54,15 @@ show_part_time_hooks = ->
   # potential errors
   $('.show_part_time').unbind('blur')
   $('.show_part_time').blur ->
-    components = $(this).val().replace(/[^0-9:]/g, '').split(":")
-    # Unify duration format
-    t = [0,0,0]
-    s = components.length
-    t[2] = parseInt(components[s-1]) if components[s-1]?
-    t[2] = 0 if isNaN(t[2])
-    t[1] += Math.floor(t[2]/60)
-    t[2] = t[2]%60
-    t[1] += parseInt(components[s-2]) if components[s-2]?
-    t[1] = 0 if isNaN(t[1])
-    t[0] += Math.floor(t[1]/60)
-    t[1] = t[1]%60
-    t[0] += parseInt(components[s-3]) if components[s-3]?
-    t[0] = 0 if isNaN(t[0])
-    twoDigit = (num) ->
-      if num > 9
-        return "" + num
-      else
-        return "0" + num
-    $(this).val(twoDigit(t[0]) + ":" + twoDigit(t[1]) + ":" + twoDigit(t[2]))
+    me = $(this)
+    t = parse_time_t me.val()
+    me.val(time_string(t))
+    total = parseInt($('#total-time').data('seconds'))
+    total -= me.data('seconds')
+    me.data('seconds', time_seconds(t))
+    total += me.data('seconds')
+    $('#total-time').html(time_string(parse_time_t(total)))
+    $('#total-time').data('seconds', total)
 
 load = ->
   $('#new-show-add-part').click (e) ->
@@ -49,10 +72,17 @@ load = ->
     )
     show_part_time_hooks()
   show_part_time_hooks()
-  $('#new-show-parts tbody').sortable({
+  $('#new-show-parts-tbody').sortable({
     axis: 'y'
   })
-  
+  # Get initial total
+  total = 0
+  $('.show_part_time').each ->
+    val = time_seconds parse_time_t($(this).val())
+    $(this).data('seconds', val)
+    total += val
+  $('#total-time').html(time_string(parse_time_t(total)))
+  $('#total-time').data('seconds', total)
   
 # Turbolinks
 $(document).on('turbolinks:load', load)

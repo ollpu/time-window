@@ -1,38 +1,49 @@
+<%# Returns a part-tag with name = part[:name] and time = part[:time] %>
 <% def make_part part
   out = <<-eos
   <tr class="part">
     <td>#{link_to 'drag_handle', '', class: 'material-icons show-part-action'}</td>
     <td>#{link_to 'delete', '', class: 'material-icons show-part-action show-part-delete'}</td>
     <td>#{text_field_tag "show[names][]", part[:name], {id: nil, class: "show_part_name"}}</td>
-    <td>#{text_field_tag "show[times][]", part[:time], {id: nil, class: "show_part_time"}}</td>
+    <td>#{text_field_tag "show[times][]", part[:time],
+      {id: nil, class: "show_part_time", :'data-seconds' => 0}}
+    </td>
   </tr>
   eos
   out.html_safe
 end %>
-<%= form_for @show do |f| %>
-  <div>
-    <%= f.label :title, 'Title:' %>
-    <%= f.text_field :title %>
-  </div>
-  Parts:
-  <br/><table id="new-show-parts">
-    <thead>
-      <th></th><th></th>
-      <th>Name</th>
-      <th>Duration</th>
-    </thead>
-    <tbody>
-      <% @show.parts.each do |part| %>
-        <%= make_part part %>
-      <% end %>
-    </tbody>
-  </table></br>
-  <%= link_to 'Add new part', '', id: 'new-show-add-part' %>
-  <div>
-    <%= f.submit 'Save' %>
-  </div>
-<% end %>
+<div id="show-show">
+  <%= form_for @show do |f| %>
+    <div>
+      <%= f.text_field :title, placeholder: 'Title' %>
+    </div>
+    Parts:
+    <br/><table id="new-show-parts">
+      <thead>
+        <th></th><th></th>
+        <th>Name</th>
+        <th>Duration</th>
+      </thead>
+      <tbody id="new-show-parts-tbody">
+        <% @show.parts.each do |part| %>
+          <%= make_part part %>
+        <% end %>
+      </tbody>
+      <tr>
+        <td></td><td></td>
+        <td>Total time:</td>
+        <td id="total-time">00:00:00</td>
+      </tr>
+    </table></br>
+    <%= link_to 'Add new part', '', id: 'new-show-add-part' %>
+    <div>
+      <%= f.submit 'Save' %>
+    </div>
+  <% end %>
 
-<div class="data" id="new-show-part-template" data-names-field='
-<%= make_part name: "", time: "00:00:00" %>
-'></div>
+  <div class="data" id="new-show-part-template" data-names-field='
+  <%= make_part name: "", time: "00:00:00" %>
+  '></div>
+
+  <%= render 'live-view', show: @show %>
+</div>

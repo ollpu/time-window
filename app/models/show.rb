@@ -12,6 +12,10 @@ class Show < ApplicationRecord
     end
   end
   
+  def live?
+    live
+  end
+  
   def parts
     arr = []
     self.names.each_with_index do |n, i|

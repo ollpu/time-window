@@ -3,6 +3,9 @@
 body {
   font-family: "Noto Sans", sans;
   margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 a {
@@ -33,7 +36,8 @@ header {
 }
 
 .content {
-  margin: 4px 6px;
+  margin: 6px 10px;
+  flex-grow: 1;
 }
 
 
