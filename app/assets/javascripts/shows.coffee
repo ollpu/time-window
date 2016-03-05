@@ -34,7 +34,14 @@ twoDigit = (num) ->
 time_string = (t) ->
   twoDigit(t[0]) + ":" + twoDigit(t[1]) + ":" + twoDigit(t[2])
 
-  
+seconds_string = (num) ->
+  t = [0,0,0]
+  t[2] = parseInt(num)
+  t[1] = Math.floor(t[2]/60)
+  t[2] = t[2]%60
+  t[0] = Math.floor(t[1]/60)
+  t[1] = t[1]%60
+  time_string t
 
 show_part_time_hooks = ->
   # Hooks for the drag handle
@@ -60,8 +67,9 @@ show_part_time_hooks = ->
     total = parseInt($('#total-time').data('seconds'))
     total -= me.data('seconds')
     me.data('seconds', time_seconds(t))
+    me.next('.show_part_seconds').val(time_seconds(t))
     total += me.data('seconds')
-    $('#total-time').html(time_string(parse_time_t(total)))
+    $('#total-time').html(seconds_string(total))
     $('#total-time').data('seconds', total)
 
 load = ->
@@ -78,10 +86,11 @@ load = ->
   # Get initial total
   total = 0
   $('.show_part_time').each ->
-    val = time_seconds parse_time_t($(this).val())
+    val = parseInt($(this).next('.show_part_seconds').val())
+    $(this).val(seconds_string(val))
     $(this).data('seconds', val)
     total += val
-  $('#total-time').html(time_string(parse_time_t(total)))
+  $('#total-time').html(seconds_string(total))
   $('#total-time').data('seconds', total)
   
 # Turbolinks

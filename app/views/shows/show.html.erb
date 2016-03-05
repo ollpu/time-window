@@ -5,8 +5,9 @@
     <td>#{link_to 'drag_handle', '', class: 'material-icons show-part-action'}</td>
     <td>#{link_to 'delete', '', class: 'material-icons show-part-action show-part-delete'}</td>
     <td>#{text_field_tag "show[names][]", part[:name], {id: nil, class: "show_part_name"}}</td>
-    <td>#{text_field_tag "show[times][]", part[:time],
-      {id: nil, class: "show_part_time", :'data-seconds' => 0}}
+    <td>
+      #{text_field_tag "", "00:00:00", {id: nil, class: "show_part_time"}}
+      #{hidden_field_tag "show[times][]", part[:time], {id: nil, class: "show_part_seconds"}}
     </td>
   </tr>
   eos

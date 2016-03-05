@@ -6,7 +6,7 @@ class Show < ApplicationRecord
       errors.add(:parts, "Didn't find the same amount of names and times!")
     end
     times.each do |time|
-      unless (time =~ /^\d+:\d+:\d+$/) == 0
+      unless time.is_a? Integer
         errors.add(:times, "Time \"#{time}\" is of invalid format!")
       end
     end

@@ -16,7 +16,7 @@ class ShowsController < ApplicationController
   
   def update
     @show = Show.find(params[:id])
-    if @show.update show_params
+    if @show.update! show_params
       redirect_to show_path(@show)
     else
       # Invalid .. TODO
