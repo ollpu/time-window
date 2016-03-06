@@ -3,8 +3,13 @@
   <% if @shows.empty? %>
     There's nothing here...
   <% else %>
-    <% @shows.each do |show| %>
-      <%= link_to show.title, show_path(show) %>
-    <% end %>
+    My shows:
+    <ul id="show-list">
+      <% @shows.each do |show| %>
+        <li>
+            <%= link_to show.title_human, show %>
+        </li>
+      <% end %>
+    </table>
   <% end %>
 </div>

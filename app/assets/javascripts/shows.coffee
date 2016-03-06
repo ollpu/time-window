@@ -60,22 +60,22 @@ show_part_time_hooks = ->
   # and then output again, creating a uniform format of notation and fixing any
   # potential errors
   $('.show_part_time').unbind('blur')
-  $('.show_part_time').blur ->
+  .blur ->
     me = $(this)
     t = parse_time_t me.val()
     me.val(time_string(t))
     total = parseInt($('#total-time').data('seconds'))
     total -= me.data('seconds')
     me.data('seconds', time_seconds(t))
-    me.next('.show_part_seconds').val(time_seconds(t))
+      .next('.show_part_seconds').val(time_seconds(t))
     total += me.data('seconds')
     $('#total-time').html(seconds_string(total))
-    $('#total-time').data('seconds', total)
+                    .data('seconds', total)
 
 load = ->
   $('#new-show-add-part').click (e) ->
     e.preventDefault()
-    $('#new-show-parts tbody').append(
+    $('#new-show-parts-tbody').append(
       $('#new-show-part-template').data('names-field')
     )
     show_part_time_hooks()
@@ -88,10 +88,10 @@ load = ->
   $('.show_part_time').each ->
     val = parseInt($(this).next('.show_part_seconds').val())
     $(this).val(seconds_string(val))
-    $(this).data('seconds', val)
+           .data('seconds', val)
     total += val
   $('#total-time').html(seconds_string(total))
-  $('#total-time').data('seconds', total)
+                  .data('seconds', total)
   
 # Turbolinks
 $(document).on('turbolinks:load', load)

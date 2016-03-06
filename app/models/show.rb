@@ -23,4 +23,12 @@ class Show < ApplicationRecord
     end
     arr
   end
+  
+  def title_human
+    if title.present?
+      title
+    else
+      "(no title)"
+    end
+  end
 end

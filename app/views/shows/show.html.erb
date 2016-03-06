@@ -6,7 +6,7 @@
     <td>#{link_to 'delete', '', class: 'material-icons show-part-action show-part-delete'}</td>
     <td>#{text_field_tag "show[names][]", part[:name], {id: nil, class: "show_part_name"}}</td>
     <td>
-      #{text_field_tag "", "00:00:00", {id: nil, class: "show_part_time"}}
+      #{text_field_tag "", "00:00:00", {id: nil, class: "show_part_time", :'data-seconds' => 0}}
       #{hidden_field_tag "show[times][]", part[:time], {id: nil, class: "show_part_seconds"}}
     </td>
   </tr>
@@ -37,8 +37,13 @@ end %>
       </tr>
     </table></br>
     <%= link_to 'Add new part', '', id: 'new-show-add-part' %>
-    <div>
+    <div id="show-actions">
       <%= f.submit 'Save' %>
+      -
+      <%= link_to 'delete', @show, method: :delete,
+        class: 'material-icons remove-show',
+        data: { confirm: "Are you sure you want to remove this show entirely?" }
+      %>
     </div>
   <% end %>
 
