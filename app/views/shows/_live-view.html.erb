@@ -6,10 +6,19 @@
   </div>
   <div id="live-started">
     <div class="controls">
-      <%= link_to 'fast_rewind', '', class: 'material-icons fr' %>
-      <%= link_to 'pause_circle_filled', '', class: 'material-icons pause' %>
-      <%= link_to 'fast_forward', '', class: 'material-icons ff' %>
+      <div id="live-indicator">00:00:00</div>
+      <%= link_to 'skip_previous', '', class: 'material-icons fr' %>
+      <%= link_to 'play_circle_filled', '', class: 'material-icons pause' %>
+      <%= link_to 'skip_next', '', class: 'material-icons ff' %>
       <%= link_to 'stop', '', class: 'material-icons stop' %>
+    </div>
+    <div id="live-list">
+      <% show.parts.each do |part| %>
+        <div class="live-part">
+          <span class="part-name"><%= part[:name] %></span>
+          <span class="part-time" data-seconds-original="<%= part[:time] %>"></span>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

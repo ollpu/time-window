@@ -17,11 +17,15 @@ class Show < ApplicationRecord
   end
   
   def parts
-    arr = []
-    self.names.each_with_index do |n, i|
-      arr.push({:name => n, :time => self.times[i]})
+    if @parts.present?
+      @parts
+    else
+      @parts = []
+      self.names.each_with_index do |n, i|
+        @parts.push({:name => n, :time => self.times[i]})
+      end
+      @parts
     end
-    arr
   end
   
   def title_human

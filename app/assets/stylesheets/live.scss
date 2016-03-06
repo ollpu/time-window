@@ -1,0 +1,105 @@
+#live-view {
+  border-left: 1px solid black;
+  padding-left: 1em;
+  margin-left: 1em;
+  flex-grow: 1;
+  
+  #live-not-started {
+    margin: 10% auto;
+    width: 20em;
+    #start-live-show {
+      font-size: 24px;
+      display: block;
+      margin: 10% auto;
+      background: #ecffd2;
+      border: 4px solid #6fbb04;
+      box-shadow: 0 1px 2px rgba(black, 0.1);
+      border-radius: 4px;
+      font-family: inherit;
+      transition-duration: 200ms;
+      cursor: pointer;
+      &:hover {
+        box-shadow: 0 2px 6px rgba(black, 0.2);
+      }
+    }
+  }
+  &.live {
+    #live-not-started {
+      display: none;
+    }
+  }
+  &:not(.live) {
+    #live-started {
+      display: none;
+    }
+  }
+}
+
+
+#live-started {
+  height: 100%;
+  display: flex;
+  flex-flow: row;
+  .controls {
+    #live-indicator {
+      font-size: 64px;
+    }
+    text-align: center;
+    display: inline-block;
+    margin: 0.4em;
+    margin-right: 0.8em;
+    flex-shrink: 0;
+    .pause, .ff, .fr, .stop {
+      font-size: 40px;
+      vertical-align: middle;
+      color: #E16565;
+      text-shadow: 0 0 3px rgba(black, 0.2);
+      transition-duration: 100ms;
+      &:hover {
+        color: #e28282;
+      }
+      &:active {
+        text-shadow: 0 0 3px rgba(black, 0.24);
+        color: #c46161;
+      }
+    }
+    .pause {
+      font-size: 64px;
+    }
+  }
+  #live-list {
+    flex-grow: 1;
+    max-height: calc(100vh - 62px);
+    overflow-y: auto;
+    .live-part {
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none;   /* Chrome/Safari/Opera */
+      -khtml-user-select: none;    /* Konqueror */
+      -moz-user-select: none;      /* Firefox */
+      -ms-user-select: none;       /* IE/Edge */
+      user-select: none;
+      cursor: pointer;
+      padding: 2px 4px;
+      display: flex;
+      span {
+        display: inline-block;
+        &.part-time {
+          flex-grow: 1;
+          text-align: right;
+        }
+        &.part-name {
+          margin-right: 1em;
+          overflow: hidden;
+        }
+      }
+      &:hover {
+        background: rgba(black, 0.16);
+      }
+      &#counting {
+        background: #6bf03c;
+        box-shadow: 0px 1px 2px rgba(black, 0.2);
+        cursor: default;
+      }
+    }
+  }
+}
