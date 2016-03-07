@@ -1,4 +1,4 @@
-
+# --- Time-string helper functions ---
 twoDigit = (num) ->
   if num > 9
     return "" + num
@@ -13,7 +13,9 @@ seconds_string = (num) ->
   t[0] = t[1] // 60
   t[1] = t[1]  % 60
   twoDigit(t[0]) + ":" + twoDigit(t[1]) + ":" + twoDigit(t[2])
-  
+# ------------
+
+# --- Host-object. Contains all global values for the cue player ---
 @host =
   play: off
   ticker_start: new Date().getTime()
@@ -22,10 +24,11 @@ seconds_string = (num) ->
   ticker_over: 0
   current_cue: $()
   live_indicator: $()
+# ------------
 
+# --- Refresh/restore time displays in cues and the master clock view ---
 restore_t = (part_t) ->
   seconds = part_t.data('seconds-original')
-  part_t.data('seconds', seconds)
   part_t.html(seconds_string(seconds))
   seconds
 
@@ -36,7 +39,9 @@ refresh_indicator = ->
   t_string = seconds_string(host.ticker_remaining)
   host.live_indicator.html(t_string)
   t_string
+# ------------
 
+# --- Cleanly set host.play variable. Updates the play/pause button ---
 set_play = (play, ppbutton = $('#live-started .controls .pp')) ->
   host.play = play
   if play
@@ -45,7 +50,9 @@ set_play = (play, ppbutton = $('#live-started .controls .pp')) ->
   else
     ppbutton.removeClass('play')
     ppbutton.html('play_circle_filled')
+# ------------
 
+# --- Go-To functions. Jump to next/prev/custom cue ---
 go_to = (part, refresh = true) ->
   host.current_cue.attr('id', '')
   restore host.current_cue # Restore previous cue
@@ -68,12 +75,15 @@ go_to_prev = (refresh = true) ->
     go_to prev, refresh
   else
     go_to host.current_cue, refresh
+# ------------
 
+# --- Ticker functions (advances the clock every second) ---
 schedule_tick = (tick_f) ->
   actual = (new Date().getTime()) - host.ticker_start
+  # Next tick in 1 second +/- correction of any accumulated error
   setTimeout tick_f, 1000 - (actual - host.ticker_elapsed)
 
-tick = ->
+tick = -> # Process tick
   if host.play
     host.ticker_elapsed += 1000
     host.ticker_remaining-- if host.ticker_remaining # Ensure that it's not made negative
@@ -97,7 +107,12 @@ pause_ticker = ->
   set_play off
   actual = (new Date().getTime()) - host.ticker_start
   host.ticker_over = actual - host.ticker_elapsed
+  # TODO: Fix: If quickly paused and then resumed again, the old ticker "thread"
+  # stays alive. Kill it when pausing!
+# ------------
 
+# --- Load. Executed when the page is loaded (via Tubolinks or otherwise) ---
+# Defines all hooks for controls and cue buttons, and initializes the logic
 load = ->
   $('#start-live-show').click ->
     # Enter live mode
@@ -144,3 +159,4 @@ load = ->
 
 # Turbolinks
 $(document).on('turbolinks:load', load)
+# ------------
