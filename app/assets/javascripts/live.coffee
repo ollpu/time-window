@@ -107,7 +107,7 @@ pause_ticker = ->
   set_play off
   actual = (new Date().getTime()) - host.ticker_start
   host.ticker_over = actual - host.ticker_elapsed
-  # TODO: Fix: If quickly paused and then removed again, the old ticker "thread"
+  # TODO: Fix: If quickly paused and then resumed again, the old ticker "thread"
   # stays alive. Kill it when pausing!
 # ------------
 
