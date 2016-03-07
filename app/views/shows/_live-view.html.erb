@@ -8,9 +8,12 @@
     <div class="controls">
       <div id="live-indicator">00:00:00</div>
       <%= link_to 'skip_previous', '', class: 'material-icons fr' %>
-      <%= link_to 'play_circle_filled', '', class: 'material-icons pause' %>
+      <%= link_to 'play_circle_filled', '', class: 'material-icons pp' %>
       <%= link_to 'skip_next', '', class: 'material-icons ff' %>
-      <%= link_to 'stop', '', class: 'material-icons stop' %>
+      <%= link_to 'replay', '', class: 'material-icons restart' %>
+      <%= link_to 'stop', '', class: 'material-icons stop', data: {
+        confirm: "Are you sure you want to stop the show?"
+      } %>
     </div>
     <div id="live-list">
       <% show.parts.each do |part| %>
