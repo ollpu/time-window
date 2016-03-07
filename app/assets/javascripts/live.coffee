@@ -110,7 +110,7 @@ pause_ticker = ->
 # ------------
 
 # --- Load. Executed when the page is loaded (via Tubolinks or otherwise) ---
-# Defines all hooks for controls and cue buttons, and initializes the views
+# Defines all hooks for controls and cue buttons, and initializes the logic
 load = ->
   $('#start-live-show').click ->
     # Enter live mode
