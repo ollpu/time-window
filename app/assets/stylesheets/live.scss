@@ -22,6 +22,12 @@
         box-shadow: 0 2px 6px rgba(black, 0.2);
       }
     }
+    .sharelink {
+      margin-top: 1em;
+      a {
+        display: block;
+      }
+    }
   }
   &.live {
     #live-not-started {
@@ -101,5 +107,16 @@
         cursor: default;
       }
     }
+  }
+}
+
+.content.live-client {
+  background: black;
+}
+
+#live-client {
+  color: white;
+  #client-time {
+    font-size: 48px;
   }
 }
