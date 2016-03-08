@@ -1,5 +1,7 @@
+require 'securerandom'
 class Show < ApplicationRecord
   validate :validate_parts
+  before_save :try_generate_urlid
   
   private def validate_parts
     if names.length != times.length
@@ -34,5 +36,15 @@ class Show < ApplicationRecord
     else
       "(no title)"
     end
+  end
+  
+  def try_generate_urlid
+    unless self.urlid.present?
+      generate_urlid
+    end
+  end
+  
+  def generate_urlid
+    self.urlid = SecureRandom.hex 8
   end
 end

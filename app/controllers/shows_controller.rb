@@ -29,6 +29,17 @@ class ShowsController < ApplicationController
     redirect_to shows_path
   end
   
+  def live_client
+    @urlid = params[:urlid]
+  end
+  
+  def regen
+    @show = Show.find(params[:id])
+    @show.generate_urlid
+    @show.save
+    redirect_to @show
+  end
+  
   private
     def show_params
       params.require(:show).permit(

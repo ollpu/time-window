@@ -13,14 +13,16 @@
   </head>
 
   <body>
-    <header id="header" data-turbolinks-permanent>
-      <nav>
-        <a id="menu" class="material-icons">menu</a>
-        <%= link_to 'Start', index_path %>
-        <%= link_to 'Shows', shows_path %>
-      </nav>
-    </header>
-    <div class="content">
+    <% unless @nomenu %>
+      <header id="header" data-turbolinks-permanent>
+        <nav>
+          <a id="menu" class="material-icons">menu</a>
+          <%= link_to 'Start', index_path %>
+          <%= link_to 'Shows', shows_path %>
+        </nav>
+      </header>
+    <% end %>
+    <div class="content <%= @content_class %>">
       <%= yield %>
     </div>
   </body>

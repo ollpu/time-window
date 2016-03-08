@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
   root to: 'index#index', as: 'index'
   resources :shows
+  get '/shows/:id/regen', to: 'shows#regen', as: 'regen_show'
+  get '/l/:urlid', to: 'shows#live_client', as: 'live_client'
 end

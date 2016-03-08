@@ -3,6 +3,13 @@
     <%= button_tag 'Start live show', id: 'start-live-show' %>
     Live show not started.
     Click on the button above to start it now.
+    <div class="sharelink">
+      Shareable link to view show:
+      <%= link_to nil, live_client_url(urlid: show.urlid) %>
+      <%= link_to 'Regenerate link', regen_show_path(show), data:
+        { confirm: 'WARNING: Regenerating the link disconnects all currently connected clients. Proceed?' }
+      %>
+    </div>
   </div>
   <div id="live-started">
     <div class="controls">
