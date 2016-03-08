@@ -51,10 +51,7 @@ set_play = (play, ppbutton = $('#live-started .controls .pp')) ->
   else
     ppbutton.removeClass('play')
     ppbutton.html('play_circle_filled')
-<<<<<<< HEAD
-=======
     clearTimeout(host.ticker_timeout)
->>>>>>> bc77a170f6abaeb01fbdb5880b17b235591f6c8b
 # ------------
 
 # --- Go-To functions. Jump to next/prev/custom cue ---
@@ -113,11 +110,6 @@ pause_ticker = ->
   set_play off
   actual = (new Date().getTime()) - host.ticker_start
   host.ticker_over = actual - host.ticker_elapsed
-<<<<<<< HEAD
-  # TODO: Fix: If quickly paused and then resumed again, the old ticker "thread"
-  # stays alive. Kill it when pausing!
-=======
->>>>>>> bc77a170f6abaeb01fbdb5880b17b235591f6c8b
 # ------------
 
 # --- Load. Executed when the page is loaded (via Tubolinks or otherwise) ---
