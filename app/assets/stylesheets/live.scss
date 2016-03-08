@@ -116,7 +116,21 @@
 
 #live-client {
   color: white;
-  #client-time {
-    font-size: 48px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  div {
+    font-family: "Arimo";
+    text-align: center;
+    font-size: 8vw;
+    &#client-time {
+      font-size: 22vw;
+    }
+    &#client-next-part {
+      color: #888;
+    }
+    &.spacer {
+      flex-grow: 1;
+    }
   }
 }

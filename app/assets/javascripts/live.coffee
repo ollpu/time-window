@@ -18,7 +18,7 @@ seconds_string = (num) ->
 # --- Host-object. Contains all global values for the cue player ---
 @host =
   play: off
-  ticker_start: new Date().getTime()
+  ticker_start: Date.now()
   ticker_remaining: 0
   ticker_elapsed: 0
   ticker_over: 0
@@ -81,7 +81,7 @@ go_to_prev = (refresh = true) ->
 
 # --- Ticker functions (advances the clock every second) ---
 schedule_tick = (tick_f) ->
-  actual = (new Date().getTime()) - host.ticker_start
+  actual = (Date.now()) - host.ticker_start
   # Next tick in 1 second +/- correction of any accumulated error
   host.ticker_timeout =
     setTimeout tick_f, 1000 - (actual - host.ticker_elapsed)
@@ -99,7 +99,7 @@ tick = -> # Process tick
 
 start_ticker = ->
   set_play on
-  host.ticker_start = new Date().getTime()
+  host.ticker_start = Date.now()
   # Resuming from pause: Decrease the time to the next step by how much was
   # timed over before pausing (i.e. Paused @ 10.765 -> wait for 765ms less)
   host.ticker_elapsed = -host.ticker_over
@@ -108,7 +108,7 @@ start_ticker = ->
 
 pause_ticker = ->
   set_play off
-  actual = (new Date().getTime()) - host.ticker_start
+  actual = (Date.now()) - host.ticker_start
   host.ticker_over = actual - host.ticker_elapsed
 # ------------
 
