@@ -31,6 +31,7 @@ class ShowsController < ApplicationController
   
   def live_client
     @urlid = params[:urlid]
+    @show = Show.where(urlid: @urlid).first
   end
   
   def regen

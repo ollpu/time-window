@@ -10,11 +10,7 @@ module ApplicationCable
     
     protected
       def get_visitor_id
-        if session[:visitor_id].present?
-          session[:visitor_id]
-        else
-          session[:visitor_id] = SecureRandom.urlsafe_base64 24
-        end
+        cookies.signed[:visitor_id] || SecureRandom.urlsafe_base64(24)
       end
   end
 end

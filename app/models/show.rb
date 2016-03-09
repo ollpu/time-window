@@ -39,9 +39,7 @@ class Show < ApplicationRecord
   end
   
   def try_generate_urlid
-    unless self.urlid.present?
-      generate_urlid
-    end
+    self.urlid ||= SecureRandom.hex 8
   end
   
   def generate_urlid

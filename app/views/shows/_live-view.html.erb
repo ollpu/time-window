@@ -4,6 +4,9 @@
     Live show not started.
     Click on the button above to start it now.
     <div class="sharelink">
+      <span class="data" id="live-urlid"
+            data-urlid="<%= show.urlid if show.urlid.present? %>">
+      </span>
       Shareable link to view show:
       <%= link_to nil, live_client_url(urlid: show.urlid) if show.urlid.present? %>
       <%= link_to 'Regenerate link', regen_show_path(show), data:
@@ -21,6 +24,12 @@
       <%= link_to 'stop', '', class: 'material-icons stop', data: {
         confirm: "Are you sure you want to stop the show?"
       } %>
+      <%# Sorry, not making this DRY (same as line 6), because it's so small and sorta different %>
+      <div class="sharelink">
+        Open this
+        <%= link_to 'link', live_client_url(urlid: show.urlid) if show.urlid.present? %>
+        on any device to view the show.
+      </div>
     </div>
     <div id="live-list">
       <% show.parts.each do |part| %>

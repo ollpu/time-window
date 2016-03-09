@@ -25,6 +25,7 @@ seconds_string = (num) ->
   ticker_timeout: 0
   current_cue: $()
   live_indicator: $()
+  socket: null
 # ------------
 
 # --- Refresh/restore time displays in cues and the master clock view ---
@@ -42,20 +43,43 @@ refresh_indicator = ->
   t_string
 # ------------
 
+# --- Send playback status to all listening clients ---
+send_status = ->
+  if host.socket
+    # Connected (not checking for actual connection, though, just the object...)
+    data =
+      play: host.play
+      cue_name: host.current_cue.find('.part-name').html()
+      next_cue: true
+      remaining: host.ticker_remaining
+      timestamp: Date.now()
+      over: host.ticker_over
+    next = host.current_cue.next()
+    if next.length
+      data.next_cue_name = next.find('.part-name').html()
+    else
+      data.next_cue = false
+    host.socket.send(data)
+  else
+    console.log("Host: Websocket connection not established!")
+# ------------
+
 # --- Cleanly set host.play variable. Updates the play/pause button ---
 set_play = (play, ppbutton = $('#live-started .controls .pp')) ->
-  host.play = play
-  if play
-    ppbutton.addClass('play')
-    ppbutton.html('pause_circle_filled')
-  else
-    ppbutton.removeClass('play')
-    ppbutton.html('play_circle_filled')
-    clearTimeout(host.ticker_timeout)
+  if host.play != play
+    host.play = play
+    if play
+      ppbutton.addClass('play')
+      ppbutton.html('pause_circle_filled')
+    else
+      ppbutton.removeClass('play')
+      ppbutton.html('play_circle_filled')
+      clearTimeout(host.ticker_timeout)
+    send_status()
 # ------------
 
 # --- Go-To functions. Jump to next/prev/custom cue ---
-go_to = (part, refresh = true) ->
+go_to = (part, refresh = true, send = true) ->
   host.current_cue.attr('id', '')
   restore host.current_cue # Restore previous cue
   host.current_cue = part
@@ -63,6 +87,7 @@ go_to = (part, refresh = true) ->
   host.ticker_over = 0
   part.attr('id', 'counting')
   refresh_indicator() if refresh
+  send_status() if send
   
 go_to_next = (refresh = true) ->
   next = host.current_cue.next()
@@ -93,23 +118,24 @@ tick = -> # Process tick
     t_string = refresh_indicator()
     host.current_cue.find('.part-time').html(t_string)
     if host.ticker_remaining <= 0
-      go_to_next(false) until host.ticker_remaining > 0 or !host.play
+      go_to_next(false, false) until host.ticker_remaining > 0 or !host.play
+      send_status()
       refresh_indicator()
     schedule_tick tick
 
 start_ticker = ->
-  set_play on
   host.ticker_start = Date.now()
   # Resuming from pause: Decrease the time to the next step by how much was
   # timed over before pausing (i.e. Paused @ 10.765 -> wait for 765ms less)
   host.ticker_elapsed = -host.ticker_over
   host.ticker_over = 0
+  set_play on
   schedule_tick(tick)
 
 pause_ticker = ->
-  set_play off
   actual = (Date.now()) - host.ticker_start
   host.ticker_over = actual - host.ticker_elapsed
+  set_play off
 # ------------
 
 # --- Load. Executed when the page is loaded (via Tubolinks or otherwise) ---
@@ -118,6 +144,12 @@ load = ->
   $('#start-live-show').click ->
     # Enter live mode
     $('#live-view').addClass('live')
+    urlid = $('#live-urlid').data('urlid')
+    host.socket = App.cable.subscriptions.create { channel: "HostChannel", urlid: urlid },
+      received: (data) ->
+        # Some client requested current status
+        send_status()
+    send_status() # Send initial status
   
   # Playback controls
   controls = $('#live-view .controls')
@@ -154,8 +186,8 @@ load = ->
     if host.current_cue != $(this)
       go_to $(this)
       
-  
-  go_to parts.first() # Start from first part
+  if parts.length
+    go_to parts.first(), true, false # Start from first part, don't try to send it
   refresh_indicator()
 
 # Turbolinks
