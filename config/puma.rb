@@ -45,5 +45,3 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
-
-stdout_redirect '/home/ollpu/apps/time-window/current/log/stdout', '/home/ollpu/apps/time-window/current/current/log/stderr', true
