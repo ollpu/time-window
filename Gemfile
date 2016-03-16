@@ -61,3 +61,7 @@ gem 'google-webfonts-rails', '~> 0.0.4'
 
 # Used for sortable
 gem 'jquery-ui-rails'
+
+group :production do
+  gem 'redis'
+end
