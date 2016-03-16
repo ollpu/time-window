@@ -127,7 +127,8 @@
   color: white;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100vh - 12px);
+  overflow-y: auto;
   div {
     font-family: "Arimo";
     text-align: center;
