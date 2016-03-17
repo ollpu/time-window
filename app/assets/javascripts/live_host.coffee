@@ -52,7 +52,6 @@ send_status = ->
       cue_name: host.current_cue.find('.part-name').html()
       next_cue: true
       remaining: host.ticker_remaining
-      timestamp: Date.now()
       over: host.ticker_over
     next = host.current_cue.next()
     if next.length

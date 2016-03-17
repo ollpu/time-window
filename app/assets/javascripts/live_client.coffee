@@ -44,8 +44,8 @@ tick = -> # Process tick
     if client.ticker_remaining > 0
       schedule_tick tick
 
-start_ticker = (timestamp, over) ->
-  client.ticker_start = timestamp # timestamp = when the host started the ticker
+start_ticker = (over) ->
+  client.ticker_start = Date.now() # timestamp = when the host started the ticker
   client.ticker_elapsed = -over
   schedule_tick(tick)
 
@@ -54,10 +54,10 @@ pause_ticker = ->
 # ------------
 
 # --- Cleanly set client.play variable ---
-set_play = (play, timestamp, over) ->
+set_play = (play, over) ->
   client.play = play
   if play
-    start_ticker(timestamp, over)
+    start_ticker(over)
   else
     pause_ticker()
 # ------------
@@ -73,7 +73,7 @@ load = ->
         # Received data from host
         client.ticker_remaining = data['remaining']
         refresh_indicator()
-        set_play data['play'], data['timestamp'], data['over']
+        set_play data['play'], data['over']
         $('#client-part-name').html(data['cue_name'])
         $('#client-next-part').html("Next: " +
           if data['next_cue']
