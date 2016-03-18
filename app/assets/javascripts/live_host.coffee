@@ -26,6 +26,8 @@ seconds_string = (num) ->
   current_cue: $()
   live_indicator: $()
   socket: null
+  timedif_start: 0
+  timedif: 0
 # ------------
 
 # --- Refresh/restore time displays in cues and the master clock view ---
@@ -41,6 +43,12 @@ refresh_indicator = ->
   t_string = seconds_string(host.ticker_remaining)
   host.live_indicator.html(t_string)
   t_string
+# ------------
+
+
+# --- Get current time adjusted ---
+time_now = ->
+  Date.now() + host.timedif
 # ------------
 
 # --- Send playback status to all listening clients ---
@@ -105,7 +113,7 @@ go_to_prev = (refresh = true) ->
 
 # --- Ticker functions (advances the clock every second) ---
 schedule_tick = (tick_f) ->
-  actual = (Date.now()) - host.ticker_start
+  actual = time_now() - host.ticker_start
   # Next tick in 1 second +/- correction of any accumulated error
   host.ticker_timeout =
     setTimeout tick_f, 1000 - (actual - host.ticker_elapsed)
@@ -123,7 +131,7 @@ tick = -> # Process tick
     schedule_tick tick
 
 start_ticker = ->
-  host.ticker_start = Date.now()
+  host.ticker_start = time_now()
   # Resuming from pause: Decrease the time to the next step by how much was
   # timed over before pausing (i.e. Paused @ 10.765 -> wait for 765ms less)
   host.ticker_elapsed = -host.ticker_over
@@ -132,7 +140,7 @@ start_ticker = ->
   schedule_tick(tick)
 
 pause_ticker = ->
-  actual = (Date.now()) - host.ticker_start
+  actual = time_now() - host.ticker_start
   host.ticker_over = actual - host.ticker_elapsed
   set_play off
 # ------------
@@ -144,10 +152,16 @@ load = ->
     # Enter live mode
     $('#live-view').addClass('live')
     urlid = $('#live-urlid').data('urlid')
+    host.timedif_start = Date.now()
     host.socket = App.cable.subscriptions.create { channel: "HostChannel", urlid: urlid },
       received: (data) ->
-        # Some client requested current status
-        send_status()
+        if data.timestamp
+          # Declare time difference (synchronized with server)
+          # Assume, that one-directional delay is two-directional delay / 2
+          host.timedif = (data.timestamp - host.timedif_start) / 2
+        else
+          # Some client requested current status
+          send_status()
     send_status() # Send initial status
   
   # Playback controls

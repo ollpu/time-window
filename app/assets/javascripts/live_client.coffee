@@ -23,15 +23,22 @@ seconds_string = (num) ->
   ticker_elapsed: 0
   ticker_timeout: 0
   live_indicator: $()
+  timedif_start: 0
+  timedif: 0
 # ------------
 
 refresh_indicator = ->
   client.live_indicator.html(seconds_string(client.ticker_remaining))
 
+# --- Get current time adjusted ---
+time_now = ->
+  Date.now() + client.timedif
+# ------------
+
 # --- Ticker functions (advances the clock every second) ---
 schedule_tick = (tick_f) ->
   clearTimeout(client.ticker_timeout)
-  actual = (Date.now()) - client.ticker_start
+  actual = time_now() - client.ticker_start
   # Next tick in 1 second +/- correction of any accumulated error
   client.ticker_timeout =
     setTimeout tick_f, 1000 - (actual - client.ticker_elapsed)
@@ -45,7 +52,7 @@ tick = -> # Process tick
       schedule_tick tick
 
 start_ticker = (over) ->
-  client.ticker_start = Date.now() # timestamp = when the host started the ticker
+  client.ticker_start = time_now()
   client.ticker_elapsed = -over
   schedule_tick(tick)
 
@@ -68,19 +75,25 @@ load = ->
   if window.location.pathname.startsWith('/l/')
     client.live_indicator = $('#client-time')
     urlid = $('#client-urlid').data('urlid')
+    client.timedif_start = Date.now()
     App.cable.subscriptions.create { channel: "ClientChannel", urlid: urlid },
       received: (data) ->
-        # Received data from host
-        client.ticker_remaining = data['remaining']
-        refresh_indicator()
-        set_play data['play'], data['over']
-        $('#client-part-name').html(data['cue_name'])
-        $('#client-next-part').html("Next: " +
-          if data['next_cue']
-            data['next_cue_name']
-          else
-            "End"
-        )
+        if data.timestamp
+          # Declare time difference (synchronized with server)
+          # Assume, that one-directional delay is two-directional delay / 2
+          client.timedif = (data.timestamp - client.timedif_start) / 2
+        else
+          # Received data from host
+          client.ticker_remaining = data['remaining']
+          refresh_indicator()
+          set_play data['play'], data['over']
+          $('#client-part-name').html(data['cue_name'])
+          $('#client-next-part').html("Next: " +
+            if data['next_cue']
+              data['next_cue_name']
+            else
+              "End"
+          )
 
 # Turbolinks
 $(document).on('turbolinks:load', load)
