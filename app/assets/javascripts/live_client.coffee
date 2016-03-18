@@ -82,6 +82,8 @@ load = ->
           # Declare time difference (synchronized with server)
           # Assume, that one-directional delay is two-directional delay / 2
           client.timedif = (data.timestamp - client.timedif_start) / 2
+          part_name = $('#client-part-name')
+          part_name.html(part_name.data('wait-start'))
         else
           # Received data from host
           client.ticker_remaining = data['remaining']

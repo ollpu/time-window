@@ -1,20 +1,20 @@
 class ShowsController < ApplicationController
-  def index
-    # Scopes
+  def index # Show all shows (the user can access)
+    # TODO: Scopes
     @shows = Show.all
   end
   
-  def new
+  def new # Create a new show, and show it
     @show = Show.new
     @show.save
     render :show
   end
   
-  def show
+  def show # Edit or host show
     @show = Show.find(params[:id])
   end
   
-  def update
+  def update # Save updates to show
     @show = Show.find(params[:id])
     if @show.update! show_params
       redirect_to show_path(@show)
@@ -23,18 +23,18 @@ class ShowsController < ApplicationController
     end
   end
   
-  def destroy
+  def destroy # Destroy show
     @show = Show.find(params[:id])
     @show.destroy
     redirect_to shows_path
   end
   
-  def live_client
+  def live_client # Display client-page
     @urlid = params[:urlid]
     @show = Show.where(urlid: @urlid).first
   end
   
-  def regen
+  def regen # Regenerate urlid for show
     @show = Show.find(params[:id])
     @show.generate_urlid
     @show.save
@@ -42,7 +42,7 @@ class ShowsController < ApplicationController
   end
   
   private
-    def show_params
+    def show_params # Allowed parameters for editing show
       params.require(:show).permit(
         :title,
         names: [],
