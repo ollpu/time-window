@@ -7,4 +7,9 @@ Rails.application.routes.draw do
   resources :shows
   get '/shows/:id/regen', to: 'shows#regen', as: 'regen_show'
   get '/l/:urlid', to: 'shows#live_client', as: 'live_client'
+  
+  resources :users
+  get '/login', to: 'sessions#new', as: 'login'
+  post '/login', to: 'sessions#create', as: 'auth'
+  get '/register', to: 'users#new', as: 'register'
 end

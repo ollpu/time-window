@@ -32,11 +32,7 @@ class Show < ApplicationRecord
   end
   
   def title_human
-    if title.present?
-      title
-    else
-      "(no title)"
-    end
+    title || "(no title)"
   end
   
   def try_generate_urlid # Generate urlid if it's not present

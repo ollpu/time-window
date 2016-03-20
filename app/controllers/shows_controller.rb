@@ -31,7 +31,7 @@ class ShowsController < ApplicationController
   
   def live_client # Display client-page
     @urlid = params[:urlid]
-    @show = Show.where(urlid: @urlid).first
+    @show = Show.find_by(urlid: @urlid)
   end
   
   def regen # Regenerate urlid for show

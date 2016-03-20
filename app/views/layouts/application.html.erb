@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TimeWindow</title>
+    <title>
+      <%= "#{@title} - " if @title.present? %>
+      Time Window
+    </title>
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => 'reload' %>
@@ -11,7 +14,7 @@
       google: ["Noto Sans", "Material Icons", "Arimo"]
     }) %>
   </head>
-
+  
   <body>
     <% unless @nomenu %>
       <header id="header" data-turbolinks-permanent>
