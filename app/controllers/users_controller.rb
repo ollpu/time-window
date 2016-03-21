@@ -2,22 +2,27 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   
   def index
+    authorize :user
     @users = User.all
   end
   
   def show
+    authorize @user
   end
   
   def new
     @user = User.new
+    authorize @user
   end
   
   def edit
+    authorize @user
   end
   
   def create
     @user = User.new(user_params)
-
+    authorize @user
+    
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
@@ -30,6 +35,7 @@ class UsersController < ApplicationController
   end
   
   def update
+    authorize @user
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
@@ -42,6 +48,7 @@ class UsersController < ApplicationController
   end
   
   def destroy
+    authorize @user
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }

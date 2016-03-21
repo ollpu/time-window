@@ -10,4 +10,7 @@ class User < ApplicationRecord
     length: { minimum: 6 },
     allow_nil: true
   
+  def add_own(show)
+    self.owned_shows << show.id
+  end
 end

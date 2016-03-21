@@ -61,3 +61,6 @@ gem 'google-webfonts-rails', '~> 0.0.4'
 
 # Used for sortable
 gem 'jquery-ui-rails'
+
+# Pundit for authorization management
+gem 'pundit'
