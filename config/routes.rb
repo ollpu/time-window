@@ -11,5 +11,6 @@ Rails.application.routes.draw do
   resources :users
   get '/login', to: 'sessions#new', as: 'login'
   post '/login', to: 'sessions#create', as: 'auth'
+  get '/logout', to: 'sessions#destroy', as: 'logout'
   get '/register', to: 'users#new', as: 'register'
 end

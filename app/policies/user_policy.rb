@@ -9,7 +9,11 @@ class UserPolicy < ApplicationPolicy
   end
   
   def update?
-    model is user # User can only edit itself
+    user && (record == user) # User can only edit itself
+  end
+  
+  def show?
+    update?
   end
   
   def destroy?

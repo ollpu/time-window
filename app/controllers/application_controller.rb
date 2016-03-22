@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
       unless current_user
         # Not logged in
         flash[:notice] = "Please log in first."
-        redirect_to login_path(navigate: request.env['PATH_INFO'])
+        redirect_to login_path
       else
         # Logged in but not otherwise authorized
         flash[:alert] = "Not authorized."

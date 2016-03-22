@@ -36,7 +36,7 @@ class ShowPolicy < ApplicationPolicy
     user
   end
   
-  def live_client
+  def live_client?
     true # Everyone can view the live show
   end
 end

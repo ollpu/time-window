@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     authorize :session
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
-      flash[:notice] = "Welcome, #{@user.name}"
+      flash[:notice] = "Welcome, #{@user.name}!"
       redirect_to index_path
     else
       flash[:error] = "Invalid email or password."

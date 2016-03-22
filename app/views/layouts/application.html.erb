@@ -19,7 +19,23 @@
     <% unless @nomenu %>
       <header id="header" data-turbolinks-permanent>
         <nav>
-          <a id="menu" class="material-icons">menu</a>
+          <a id="open-menu" class="material-icons">menu</a>
+          <ul id="side-menu">
+            <li>
+              <%= link_to logout_path do %>
+                <span class="material-icons">arrow_back</span>
+                Log out
+              <% end %>
+            </li>
+            <% if current_user && policy(current_user).update? %>
+              <li>
+                <%= link_to user_path(current_user) do %>
+                  <span class="material-icons">account_circle</span>
+                  Manage my account
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
           <%= link_to 'Start', index_path %>
           <%= link_to 'Shows', shows_path %>
         </nav>

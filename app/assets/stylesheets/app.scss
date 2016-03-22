@@ -13,6 +13,16 @@ a {
   color: #448cec;
 }
 
+.flash-container {
+  .flash {
+    padding: 0.2em 0.4em;
+    background-color: #77c2f1;
+    &.flash-error {
+      background-color: #f17777;
+    }
+  }
+}
+
 header {
   border-bottom: 1px solid black;
   nav {
@@ -31,6 +41,29 @@ header {
     a.material-icons {
       height: auto;
       padding: 0.5em;
+    }
+  }
+}
+
+#side-menu {
+  display: none;
+  list-style-type: none;
+  position: fixed;
+  left: 0px;
+  top: 3rem;
+  bottom: 0px;
+  background: white;
+  margin: 1px 0;
+  padding: 1em 0;
+  box-shadow: 5px 2px 5px rgba(black, 0.2);
+  &.open {
+    display: block;
+  }
+  li a {
+    min-width: 8cm;
+    .material-icons {
+      vertical-align: middle;
+      width: 1.2em;
     }
   }
 }
