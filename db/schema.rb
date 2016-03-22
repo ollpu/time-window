@@ -31,9 +31,9 @@ ActiveRecord::Schema.define(version: 20160321184400) do
     t.string   "email"
     t.string   "name"
     t.string   "password_digest"
-    t.integer  "owned_shows",                  array: true
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.integer  "owned_shows",     default: [],              array: true
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
 end
