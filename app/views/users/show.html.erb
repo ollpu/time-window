@@ -1,4 +1,47 @@
-<p id="notice"><%= notice %></p>
+<h1>My account</h1>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<%= form_for(@user) do |f| %>
+  <% if @user.errors.any? %>
+    <div class="errors">
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="part">
+    <%= f.label :email %>
+    <%= f.email_field :email, disabled: true %>
+  </div>
+  For security reasons, you cannot change your account's email address.
+  <%# If you got it wrong, contact an admin ... %>
+  
+  <div class="part">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+  
+  <br/>
+  Fill in if you want to change your password:
+  
+  <div class="part">
+    <%= f.label :old_password %>
+    <%= f.password_field :old_password %>
+  </div>
+  
+  <div class="part">
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </div>
+  
+  <div class="part">
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+  </div>
+  
+  <div class="actions">
+    <%= f.submit 'Update' %>
+  </div>
+<% end %>

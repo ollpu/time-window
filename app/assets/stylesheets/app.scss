@@ -13,10 +13,20 @@ a {
   color: #448cec;
 }
 
+@keyframes flash_slide {
+  from { max-height: 0em; }
+  to   { max-height: 1.5em; }
+}
+
 .flash-container {
   .flash {
     padding: 0.2em 0.4em;
     background-color: #77c2f1;
+    
+    animation-name: flash_slide;
+    animation-duration: 400ms;
+    animation-timing-function: ease-out;
+    overflow: hidden;
     &.flash-error {
       background-color: #f17777;
     }
@@ -56,6 +66,7 @@ header {
   margin: 1px 0;
   padding: 1em 0;
   box-shadow: 5px 2px 5px rgba(black, 0.2);
+  overflow-y: auto;
   &.open {
     display: block;
   }
