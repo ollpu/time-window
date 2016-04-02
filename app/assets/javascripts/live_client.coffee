@@ -84,6 +84,12 @@ load = ->
           client.timedif = (data.timestamp - client.timedif_start) / 2
           part_name = $('#client-part-name')
           part_name.html(part_name.data('wait-start'))
+        else if data.show_stopped
+          client.play = off
+          client.live_indicator.html('--:--:--')
+          part_name = $('#client-part-name')
+          part_name.html(part_name.data('wait-start'))
+          $('#client-next-part').html("Next: -")
         else
           # Received data from host
           client.ticker_remaining = data['remaining']

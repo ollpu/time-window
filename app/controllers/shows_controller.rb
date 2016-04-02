@@ -39,7 +39,7 @@ class ShowsController < ApplicationController
   def live_client # Display client-page
     @urlid = params[:urlid]
     @show = Show.find_by(urlid: @urlid)
-    authorize @show
+    authorize :show
   end
   
   def regen # Regenerate urlid for show

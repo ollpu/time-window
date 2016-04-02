@@ -92,6 +92,7 @@ go_to = (part, refresh = true, send = true) ->
   host.current_cue = part
   host.ticker_remaining = restore part # Restore part, and set ticker_remaining
   host.ticker_over = 0
+  start_ticker() if host.play
   part.attr('id', 'counting')
   refresh_indicator() if refresh
   send_status() if send
@@ -114,6 +115,7 @@ go_to_prev = (refresh = true) ->
 # --- Ticker functions (advances the clock every second) ---
 schedule_tick = (tick_f) ->
   actual = time_now() - host.ticker_start
+  clearTimeout(host.ticker_timeout)
   # Next tick in 1 second +/- correction of any accumulated error
   host.ticker_timeout =
     setTimeout tick_f, 1000 - (actual - host.ticker_elapsed)
@@ -154,6 +156,8 @@ load = ->
     urlid = $('#live-urlid').data('urlid')
     host.timedif_start = Date.now()
     host.socket = App.cable.subscriptions.create { channel: "HostChannel", urlid: urlid },
+      connected: ->
+        send_status() # Send initial status
       received: (data) ->
         if data.timestamp
           # Declare time difference (synchronized with server)
@@ -162,7 +166,6 @@ load = ->
         else
           # Some client requested current status
           send_status()
-    send_status() # Send initial status
   
   # Playback controls
   controls = $('#live-view .controls')
@@ -185,6 +188,12 @@ load = ->
   controls.find('.restart').click (e) ->
     e.preventDefault()
     go_to $('#live-list .live-part').first()
+  
+  controls.find('.stop').click (e) ->
+    e.preventDefault()
+    if confirm($(this).data('confirm-msg'))
+      host.socket.unsubscribe()
+      $('#live-view').removeClass('live')
   
   host.live_indicator = $('#live-indicator')
   

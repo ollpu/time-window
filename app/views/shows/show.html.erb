@@ -18,6 +18,13 @@ end %>
     <div>
       <%= f.text_field :title, placeholder: 'Title' %>
     </div>
+    <div class="owners">
+      Owners:
+      <% @show.owners.each do |user_id| %>
+        <span class="email"><%= User.find(user_id).email %></span>
+        <%# Should we just use has_many :users? %>
+      <% end %>
+    </div>
     Parts:
     <br/><table id="new-show-parts">
       <thead>

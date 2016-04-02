@@ -1,4 +1,4 @@
-<div id="live-view" class="<%= "live" if show.live? %>">
+<div id="live-view" class="">
   <div id="live-not-started">
     <%= button_tag 'Start live show', id: 'start-live-show' %>
     Live show not started.
@@ -22,7 +22,7 @@
       <%= link_to 'skip_next', '', class: 'material-icons ff' %>
       <%= link_to 'replay', '', class: 'material-icons restart' %>
       <%= link_to 'stop', '', class: 'material-icons stop', data: {
-        confirm: "Are you sure you want to stop the show?"
+        confirm_msg: "Are you sure you want to stop the show?"
       } %>
       <%# Sorry, not making this DRY (same as line 6), because it's so small and sorta different %>
       <div class="sharelink">
