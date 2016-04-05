@@ -92,6 +92,9 @@ load = ->
     total += val
   $('#total-time').html(seconds_string(total))
                   .data('seconds', total)
+  $('#open-owners').click (e) ->
+    e.preventDefault()
+    $('#owners-menu').addClass('open')
   
 # Turbolinks
 $(document).on('turbolinks:load', load)

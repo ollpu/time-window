@@ -24,6 +24,8 @@ end %>
         <span class="email"><%= User.find(user_id).email %></span>
         <%# Should we just use has_many :users? %>
       <% end %>
+      -
+      <%= link_to 'Add collaborators', '', id: 'open-owners' %>
     </div>
     Parts:
     <br/><table id="new-show-parts">
@@ -60,3 +62,7 @@ end %>
 
   <%= render 'live-view', show: @show %>
 </div>
+<%= form_tag add_show_owner_path(@show), id: 'owners-menu' do %>
+  <h2>Add collaborators</h2>
+  
+<% end %>
