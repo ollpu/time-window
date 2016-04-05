@@ -1,18 +1,4 @@
-<%# Returns a part-tag with name = part[:name] and time = part[:time] %>
-<% def make_part part
-  out = <<-eos
-  <tr class="part">
-    <td>#{link_to 'drag_handle', '', class: 'material-icons show-part-action'}</td>
-    <td>#{link_to 'delete', '', class: 'material-icons show-part-action show-part-delete'}</td>
-    <td>#{text_field_tag "show[names][]", part[:name], {id: nil, class: "show_part_name"}}</td>
-    <td>
-      #{text_field_tag "", "00:00:00", {id: nil, class: "show_part_time", :'data-seconds' => 0}}
-      #{hidden_field_tag "show[times][]", part[:time], {id: nil, class: "show_part_seconds"}}
-    </td>
-  </tr>
-  eos
-  out.html_safe
-end %>
+
 <div id="show-show">
   <%= form_for @show do |f| %>
     <div>
@@ -21,11 +7,15 @@ end %>
     <div class="owners">
       Owners:
       <% @show.owners.each do |user_id| %>
-        <span class="email"><%= User.find(user_id).email %></span>
+        <% email = User.find(user_id).email %>
+        <a class="email"><%= email %></a>
+        <%= hidden_field_tag 'show[owners]', email %>
         <%# Should we just use has_many :users? %>
       <% end %>
-      -
-      <%= link_to 'Add collaborators', '', id: 'open-owners' %>
+      <div>
+        <%= email_field_tag nil, '', id: 'add-owner-name' %>
+        <%= button_tag 'Add collaborator', id: 'add-owner-button' %>
+      </div>
     </div>
     Parts:
     <br/><table id="new-show-parts">
@@ -36,7 +26,7 @@ end %>
       </thead>
       <tbody id="new-show-parts-tbody">
         <% @show.parts.each do |part| %>
-          <%= make_part part %>
+          <%= render "part_template", part: part %>
         <% end %>
       </tbody>
       <tr>
@@ -57,12 +47,8 @@ end %>
   <% end %>
 
   <div class="data" id="new-show-part-template" data-names-field='
-  <%= make_part name: "", time: "00:00:00" %>
+  <%= render "part_template", part: { name: "", time: "00:00:00" } %>
   '></div>
 
   <%= render 'live-view', show: @show %>
 </div>
-<%= form_tag add_show_owner_path(@show), id: 'owners-menu' do %>
-  <h2>Add collaborators</h2>
-  
-<% end %>
