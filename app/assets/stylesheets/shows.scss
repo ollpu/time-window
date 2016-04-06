@@ -14,6 +14,7 @@
 }
 
 .edit_show {
+  width: 24em;
   #new-show-parts {
     border: 1px solid black;
     border-radius: 0.2em;
@@ -53,23 +54,5 @@
     input {
       vertical-align: middle;
     }
-  }
-}
-
-#owners-menu {
-  display: none;
-  &.open {
-    display: block;
-    position: fixed;
-    background: white;
-    top: 20%;
-    width: 20em;
-    left: calc(50% - 10em);
-    padding: 1em;
-    border-radius: 3px;
-    box-shadow: 0 0 10px 8px rgba(black, 0.2);
-  }
-  h2 {
-    margin: 0;
   }
 }

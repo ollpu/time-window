@@ -71,6 +71,11 @@ show_part_time_hooks = ->
     total += me.data('seconds')
     $('#total-time').html(seconds_string(total))
                     .data('seconds', total)
+owners_hooks = ->
+  $('#owners-list a.email').unbind('click').click (e) ->
+    e.preventDefault()
+    $(this).after().remove() # Remove the hiddem foeöd
+    $(this).remove()
 
 load = ->
   $('#new-show-add-part').click (e) ->
@@ -92,9 +97,15 @@ load = ->
     total += val
   $('#total-time').html(seconds_string(total))
                   .data('seconds', total)
-  $('#open-owners').click (e) ->
+  $('#add-owner-button').click (e) ->
     e.preventDefault()
-    $('#owners-menu').addClass('open')
+    email_field = $('#add-owner-name')
+    email = email_field.val()
+    $('#owners-list').append "<a class='email' href>#{email}</a>
+    <input type='hidden' value='#{email}' name='show[owners][]'> "
+    owners_hooks()
+    email_field.val('')
+  owners_hooks()
   
 # Turbolinks
 $(document).on('turbolinks:load', load)

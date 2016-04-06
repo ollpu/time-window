@@ -4,18 +4,17 @@
     <div>
       <%= f.text_field :title, placeholder: 'Title' %>
     </div>
-    <div class="owners">
+    <div id="owners-list" class="owners">
       Owners:
       <% @show.owners.each do |user_id| %>
         <% email = User.find(user_id).email %>
-        <a class="email"><%= email %></a>
-        <%= hidden_field_tag 'show[owners]', email %>
-        <%# Should we just use has_many :users? %>
+        <a class="email" href><%= email %></a>
+        <%= hidden_field_tag 'show[owners][]', email, id: nil %>
       <% end %>
-      <div>
-        <%= email_field_tag nil, '', id: 'add-owner-name' %>
-        <%= button_tag 'Add collaborator', id: 'add-owner-button' %>
-      </div>
+    </div>
+    <div>
+      <%= email_field_tag nil, '', id: 'add-owner-name' %>
+      <%= button_tag 'Add collaborator', id: 'add-owner-button' %>
     </div>
     Parts:
     <br/><table id="new-show-parts">
