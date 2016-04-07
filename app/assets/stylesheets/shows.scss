@@ -44,6 +44,14 @@
       &:not(:last-of-type)::after {
         content: ', ';
       }
+      &:hover::before {
+        content: "remove_circle";
+        color: red;
+        font-family: "Material Icons";
+        position: absolute;
+        font-size: 22px;
+        margin-left: -1em;
+      }
     }
   }
   #show-actions {

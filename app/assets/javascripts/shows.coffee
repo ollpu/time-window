@@ -74,7 +74,7 @@ show_part_time_hooks = ->
 owners_hooks = ->
   $('#owners-list a.email').unbind('click').click (e) ->
     e.preventDefault()
-    $(this).after().remove() # Remove the hiddem foeöd
+    $(this).after().remove() # Remove the hidden field
     $(this).remove()
 
 load = ->
@@ -101,10 +101,11 @@ load = ->
     e.preventDefault()
     email_field = $('#add-owner-name')
     email = email_field.val()
-    $('#owners-list').append "<a class='email' href>#{email}</a>
-    <input type='hidden' value='#{email}' name='show[owners][]'> "
-    owners_hooks()
-    email_field.val('')
+    if email != ''
+      $('#owners-list').append "<a class='email' href>#{email}</a>
+      <input type='hidden' value='#{email}' name='show[owners][]'> "
+      owners_hooks()
+      email_field.val('')
   owners_hooks()
   
 # Turbolinks

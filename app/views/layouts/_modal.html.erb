@@ -1,0 +1,12 @@
+<%= form_tag url, { remote: true, id: id, class: 'modal closed' } do %>
+  <div class="top">
+    <h3><%= title %></h3>
+    <span class="material-icons close-modal" data-modal-id="<%= id %>">clear</span>
+  </div>
+  <%= yield %>
+  <div class="bottom">
+    <a href class="close-modal" data-modal-id="<%= id %>">Cancel</a>
+    <%= submit_tag submit_name %>
+  </div>
+<% end %>
+<div class="modal-background close-modal" data-modal-id="<%= id %>"></div>

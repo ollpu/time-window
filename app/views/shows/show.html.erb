@@ -4,7 +4,7 @@
     <div>
       <%= f.text_field :title, placeholder: 'Title' %>
     </div>
-    <div id="owners-list" class="owners">
+    <!-- <div id="owners-list" class="owners">
       Owners:
       <% @show.owners.each do |user_id| %>
         <% email = User.find(user_id).email %>
@@ -15,6 +15,9 @@
     <div>
       <%= email_field_tag nil, '', id: 'add-owner-name' %>
       <%= button_tag 'Add collaborator', id: 'add-owner-button' %>
+    </div> -->
+    <div>
+      <%= link_to 'Manage collaborators', '', class: 'open-modal', data: { modal_id: 'manage-owners' } %>
     </div>
     Parts:
     <br/><table id="new-show-parts">
@@ -51,3 +54,24 @@
 
   <%= render 'live-view', show: @show %>
 </div>
+
+<%= render layout: 'layouts/modal', locals:
+  { title: 'Manage collaborators', submit_name: 'Save', id: 'manage-owners',
+    url: nil } do %>
+  Owners:
+  <ul id="owners-list" class="owners">
+    <% @show.owners.each do |user_id| %>
+      <% unless user_id == current_user.id %>
+        <% email = User.find(user_id).email %>
+        <a class="email" href><%= email %></a>
+      <% else %>
+        You
+      <% end %>
+      <%= hidden_field_tag 'show[owners][]', email, id: nil %>
+    <% end %>
+  </ul>
+  <div>
+    <%= email_field_tag nil, '', id: 'add-owner-name' %>
+    <%= button_tag 'Add collaborator', id: 'add-owner-button' %>
+  </div>
+<% end %>
