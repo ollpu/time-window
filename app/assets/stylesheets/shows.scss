@@ -37,23 +37,6 @@
     border-bottom: 2px solid #444;
     font-size: 24px;
   }
-  .owners {
-    margin: 0.8em 0;
-    .email {
-      display: inline-block;
-      &:not(:last-of-type)::after {
-        content: ', ';
-      }
-      &:hover::before {
-        content: "remove_circle";
-        color: red;
-        font-family: "Material Icons";
-        position: absolute;
-        font-size: 22px;
-        margin-left: -1em;
-      }
-    }
-  }
   #show-actions {
     .remove-show {
       color: #767676;
@@ -61,6 +44,21 @@
     }
     input {
       vertical-align: middle;
+    }
+  }
+}
+
+.owners {
+  margin: 0.8em 0;
+  .email:not(.self) {
+    &:hover::before {
+      background: white;
+      content: "remove_circle";
+      color: red;
+      font-family: "Material Icons";
+      position: absolute;
+      font-size: 22px;
+      margin-left: -1.1em;
     }
   }
 }

@@ -8,6 +8,8 @@ load = ->
     e.preventDefault()
     modal = $("##{$(this).data('modal-id')}")
     modal.addClass('closed')
+  $('.modal').submit ->
+    $(this).addClass('closed')
 
 # Turbolinks
 $(document).on('turbolinks:load', load)

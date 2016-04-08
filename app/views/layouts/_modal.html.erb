@@ -3,7 +3,9 @@
     <h3><%= title %></h3>
     <span class="material-icons close-modal" data-modal-id="<%= id %>">clear</span>
   </div>
-  <%= yield %>
+  <div class="middle">
+    <%= yield %>
+  </div>
   <div class="bottom">
     <a href class="close-modal" data-modal-id="<%= id %>">Cancel</a>
     <%= submit_tag submit_name %>
