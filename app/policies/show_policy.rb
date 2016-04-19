@@ -8,7 +8,7 @@ class ShowPolicy < ApplicationPolicy
     end
     
     def resolve
-      scope.where(id: user.owned_shows)
+      scope.where("? = ANY (owners)", user.id)
     end
   end
   

@@ -29,9 +29,4 @@ class User < ApplicationRecord
       end
     end
   end
-  
-  
-  def add_own(show)
-    self.owned_shows << show.id
-  end
 end

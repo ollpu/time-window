@@ -42,14 +42,4 @@ class Show < ApplicationRecord
   def generate_urlid # Force-generate urlid
     self.urlid = SecureRandom.hex 8
   end
-  
-  before_destroy :remove_ownership
-  
-  private def remove_ownership
-    owners.each do |oid|
-      owner = User.find(oid)
-      owner.owned_shows.delete(id)
-      owner.save!
-    end
-  end
 end

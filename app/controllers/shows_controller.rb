@@ -9,7 +9,6 @@ class ShowsController < ApplicationController
     @show.owners << current_user.id
     authorize @show
     @show.save
-    current_user.add_own(@show)
     current_user.save
     render :show
   end
