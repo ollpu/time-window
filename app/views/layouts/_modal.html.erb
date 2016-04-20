@@ -1,9 +1,20 @@
-<%= form_tag url, { remote: true, id: id, class: 'modal closed' } do %>
+<%
+  id ||= nil
+  custom_submit ||= false
+  item ||= nil
+  title ||= "Modal"
+  submit_name ||= nil
+%>
+<%# TODO: Write a manual here %>
+<%= form_tag url, { remote: true, id: id, class: 'modal closed',
+    data: { custom_submit: custom_submit } } do %>
+  <%= hidden_field_tag :id, item&.id %>
   <div class="top">
     <h3><%= title %></h3>
     <span class="material-icons close-modal" data-modal-id="<%= id %>">clear</span>
   </div>
   <div class="middle">
+    <div class="modal-error"></div>
     <%= yield %>
   </div>
   <div class="bottom">

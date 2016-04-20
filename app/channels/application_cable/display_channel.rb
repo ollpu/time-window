@@ -1,4 +1,5 @@
-class ClientChannel < ApplicationCable::Channel
+# Name had to be changed away from ClientChannel of a naming collision?
+class DisplayChannel < ApplicationCable::Channel
   def subscribed # Client starts viewing a show
     # All status-updates will go through this stream
     stream_from "client_for_#{params[:urlid]}"

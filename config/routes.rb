@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   root to: 'index#index', as: 'index'
   resources :shows
   get '/shows/:id/regen', to: 'shows#regen', as: 'regen_show'
-  post '/shows/:id/owners', to: 'shows#owners', as: 'man_owners'
+  get '/shows/:id/owners', to: 'shows#owners', as: 'owners'
+  post '/shows/:id/owners', to: 'shows#update_owners', as: 'man_owners'
   get '/l/:urlid', to: 'shows#live_client', as: 'live_client'
   
   resources :users

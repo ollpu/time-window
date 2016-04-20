@@ -45,21 +45,13 @@
 
 <%= render layout: 'layouts/modal', locals:
   { title: 'Manage collaborators', submit_name: 'Save', id: 'manage-owners',
-    url: man_owners_path } do %>
-  Owners:
+    url: man_owners_path, item: @show, custom_submit: true } do %>
+  Click on a collaborator to remove them.
   <ul id="owners-list" class="owners">
-    <% @show.owners.each do |user_id| %>
-      <% unless user_id == current_user.id %>
-        <% email = User.find(user_id).email %>
-        <li class="email" href><%= email %></li>
-      <% else %>
-        <li class="email self">You</li>
-      <% end %>
-      <%= hidden_field_tag 'show[owners][]', email, id: nil %>
-    <% end %>
+    <%# Will be populated when modal is opened %>
   </ul>
   <div>
-    <%= email_field_tag nil, '', id: 'add-owner-name' %>
+    <%= text_field_tag nil, '', id: 'add-owner-name', placeholder: 'Email-address' %>
     <%= button_tag 'Add collaborator', id: 'add-owner-button' %>
   </div>
 <% end %>

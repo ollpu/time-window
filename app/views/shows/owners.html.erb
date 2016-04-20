@@ -1,0 +1,8 @@
+<li class="email self">You
+<%= hidden_field_tag 'show[owners][]', current_user.email, id: nil %></li>
+<% @owners.each do |email, valid| %>
+  <li class="email <%= 'invalid' if !valid %>" href>
+    <%= email %>
+    <%= hidden_field_tag 'show[owners][]', email, id: nil %>
+  </li>
+<% end %>

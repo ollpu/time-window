@@ -13,6 +13,7 @@ class SessionsController < ApplicationController
       redirect_to index_path
     else
       flash[:error] = "Invalid email or password."
+      @rejected = true
       render :new
     end
   end

@@ -48,6 +48,26 @@ class ShowsController < ApplicationController
     redirect_to @show
   end
   
+  def owners
+    @show = Show.find(params[:id])
+    authorize @show
+    @owners = get_show_owners(@show)
+    render layout: false
+  end
+  
+  def update_owners
+    @show = Show.find(params[:id])
+    authorize @show
+    @owners = set_show_owners @show
+    if @show.errors.none? # Note: The show isn't ever actually validated,
+                          # so using .valid? won't work properly.
+      @show.save
+      head :ok
+    else
+      render :owners, status: 422, layout: false
+    end
+  end
+  
   private
     def show_params # Allowed parameters for editing show
       params.require(:show).permit(
@@ -55,5 +75,18 @@ class ShowsController < ApplicationController
         names: [],
         times: []
       )
+    end
+    
+    def get_show_owners show
+      emails = show.owners_as_emails(current_user.id)
+      Hash[emails.collect { |e| [e, true] }] # Make it into a hash: {"email" => true}
+    end
+    def set_show_owners show
+      input = params[:show][:owners]
+      if input.is_a? Array
+        input.delete(current_user.email) # Make sure that current_user is kept
+                                         # in the owners by adding it manually
+        show.set_owners_by_emails input, current_user.id
+      end
     end
 end

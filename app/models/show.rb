@@ -42,4 +42,37 @@ class Show < ApplicationRecord
   def generate_urlid # Force-generate urlid
     self.urlid = SecureRandom.hex 8
   end
+  
+  def set_owners_by_emails emails, ids = []
+    owners = Array(ids)
+    add_owners_by_emails emails
+  end
+  
+  # Returns a hash of which emails were accepted
+  def add_owners_by_emails emails
+    Hash[emails.collect { |e| [e, add_owner_by_email(e)] }]
+  end
+  
+  def add_owner_by_email email
+    user = User.find_by(email: email)
+    if user.present?
+      owners |= [user.id]
+      true
+    else
+      errors.add(:owners, "user with email \"#{email}\" was not found")
+      false
+    end
+  end
+  
+  def owners_as_emails without=[]
+    without = Array(without)
+    emails = []
+    owners.each do |user_id|
+      if without.exclude? user_id
+        user = User.find(user_id)
+        emails << user.email
+      end
+    end
+    emails
+  end
 end

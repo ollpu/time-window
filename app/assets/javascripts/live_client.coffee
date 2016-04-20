@@ -76,7 +76,7 @@ load = ->
     client.live_indicator = $('#client-time')
     urlid = $('#client-urlid').data('urlid')
     client.timedif_start = Date.now()
-    App.cable.subscriptions.create { channel: "ClientChannel", urlid: urlid },
+    App.cable.subscriptions.create { channel: "DisplayChannel", urlid: urlid },
       received: (data) ->
         if data.timestamp
           # Declare time difference (synchronized with server)

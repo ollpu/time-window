@@ -35,6 +35,9 @@ $padding: 1rem;
   .middle {
     overflow-y: auto;
     flex-shrink: 1;
+    .modal-error {
+      color: red;
+    }
   }
   .bottom {
     text-align: right;

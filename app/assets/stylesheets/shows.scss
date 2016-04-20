@@ -50,15 +50,32 @@
 
 .owners {
   margin: 0.8em 0;
-  .email:not(.self) {
-    &:hover::before {
-      background: white;
-      content: "remove_circle";
+  padding: 0;
+  list-style-type: none;
+  @mixin owner-icon($text, $color) {
+    content: $text;
+    color: $color;
+    font-family: "Material Icons";
+    position: absolute;
+    font-size: 22px;
+    margin-left: -1.5em;
+  }
+  .email {
+    padding-left: 2.5em;
+    &::before {
+      @include owner-icon("account_circle", #{#767676});
+    }
+    &:not(.self):hover::before {
+      @include owner-icon("remove_circle", #{red});
+    }
+    &.self:hover::before {
+      @include owner-icon("remove_circle", #{#999});
+    }
+    &.invalid {
       color: red;
-      font-family: "Material Icons";
-      position: absolute;
-      font-size: 22px;
-      margin-left: -1.1em;
+      &::before {
+        @include owner-icon("account_circle", #{#804949})
+      }
     }
   }
 }

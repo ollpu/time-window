@@ -17,7 +17,7 @@ class ShowPolicy < ApplicationPolicy
   end
   
   def show?
-    record.owners.include? user.id
+    index? and record.owners.include? user.id
   end
   
   def update?
@@ -30,6 +30,14 @@ class ShowPolicy < ApplicationPolicy
   
   def regen?
     show?
+  end
+  
+  def owners?
+    show?
+  end
+  
+  def update_owners?
+    update?
   end
   
   def new?

@@ -72,11 +72,9 @@ show_part_time_hooks = ->
     $('#total-time').html(seconds_string(total))
                     .data('seconds', total)
 owners_hooks = ->
-  $('#owners-list .email:not(.self)').unbind('click').click (e) ->
-    e.preventDefault()
-    $(this).after().remove() # Remove the hidden field
+  $('#owners-list .email:not(.self)').unbind('click').click ->
     $(this).remove()
-
+@show_owners_hooks = owners_hooks
 load = ->
   $('#new-show-add-part').click (e) ->
     e.preventDefault()
@@ -97,17 +95,38 @@ load = ->
     total += val
   $('#total-time').html(seconds_string(total))
                   .data('seconds', total)
+  
+  # Owners-modal
   $('#add-owner-button').click (e) ->
     e.preventDefault()
     email_field = $('#add-owner-name')
     email = email_field.val()
     if email != ''
-      $('#owners-list').append "<li class='email' href>#{email}</li>
-      <input type='hidden' value='#{email}' name='show[owners][]'> "
+      $('#owners-list').append "<li class='email' href>#{email}
+      <input type='hidden' value='#{email}' name='show[owners][]'></li>"
       owners_hooks()
       email_field.val('')
   owners_hooks()
-  
+  $('#manage-owners').on 'open-modal-handle', ->
+    # Populate the owners-modal when opened
+    me = $(this)
+    $.get me.prop('action'), (data) ->
+      $('#owners-list').html(data)
+      show_owners_hooks()
+  .submit ->
+    me = $(this)
+    $('#add-owner-button').click()
+    $.post(me.prop('action'), me.serialize(), ->
+      $('#manage-owners').trigger 'close-modal'
+    ).fail (xhr, status) ->
+      if xhr.status == 422
+        # Some emails were invalid
+        $('#owners-list').html(xhr.responseText)
+        $('#manage-owners').trigger 'modal-error', 'Some of the emails are not linked to any account. Try again.'
+        show_owners_hooks()
+      else
+        # Unhandleable error
+        $('#manage-owners').trigger 'modal-error', "An unexpected error occured: #{status}"
   
 # Turbolinks
 $(document).on('turbolinks:load', load)
