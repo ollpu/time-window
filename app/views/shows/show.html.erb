@@ -2,19 +2,19 @@
 <div id="show-show">
   <%= form_for @show do |f| %>
     <div>
-      <%= f.text_field :title, placeholder: 'Title' %>
+      <%= f.text_field :title, placeholder: 'Enter title' %>
     </div>
     <div>
       <%= link_to 'Manage collaborators', '', class: 'open-modal', data: { modal_id: 'manage-owners' } %>
     </div>
     Parts:
-    <br/><table id="new-show-parts">
+    <br/><table id="show-parts">
       <thead>
         <th></th><th></th>
         <th>Name</th>
         <th>Duration</th>
       </thead>
-      <tbody id="new-show-parts-tbody">
+      <tbody id="show-parts-tbody">
         <% @show.parts.each do |part| %>
           <%= render "part_template", part: part %>
         <% end %>
@@ -36,7 +36,7 @@
     </div>
   <% end %>
 
-  <div class="data" id="new-show-part-template" data-names-field='
+  <div class="data" id="new-show-part-template" data-template='
   <%= render "part_template", part: { name: "", time: "00:00:00" } %>
   '></div>
 

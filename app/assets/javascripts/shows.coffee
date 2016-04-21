@@ -54,7 +54,13 @@ show_part_time_hooks = ->
   $('.show-part-delete').unbind('click');
   $('.show-part-delete').click (e) ->
     e.preventDefault()
-    $(this).parent().parent().remove()
+    row = $(this).parent().parent()
+    total = $('#total-time')
+    val = parseInt(total.data('seconds')) - parseInt(
+          row.find('.show_part_time').data('seconds'))
+    total.html(seconds_string(val))
+         .data('seconds', val)
+    row.remove()
   
   # When a time-field is blurred (focused out of), it's format will be parsed
   # and then output again, creating a uniform format of notation and fixing any
@@ -78,9 +84,7 @@ owners_hooks = ->
 load = ->
   $('#new-show-add-part').click (e) ->
     e.preventDefault()
-    $('#new-show-parts-tbody').append(
-      $('#new-show-part-template').data('names-field')
-    )
+    $('#show-parts-tbody').append $('#new-show-part-template').data('template')
     show_part_time_hooks()
   show_part_time_hooks()
   $('#new-show-parts-tbody').sortable({

@@ -189,6 +189,10 @@ load = ->
     e.preventDefault()
     go_to $('#live-list .live-part').first()
   
+  controls.find('.timer').click (e) ->
+    e.preventDefault()
+    
+  
   controls.find('.stop').click (e) ->
     e.preventDefault()
     if confirm($(this).data('confirm-msg'))

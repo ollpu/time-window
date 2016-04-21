@@ -43,10 +43,7 @@ namespace :puma do
   desc 'Start the puma server'
   task :start do
     on roles(:web) do
-      execute "
-      /home/#{fetch(:user)}/.rvm/scripts/rvm &&\
-      cd #{fetch(:deploy_to)}/current &&\
-      bundle exec puma -C #{fetch(:puma_conf)}"
+      # execute "cd #{release_path}", :bundle, :exec, "puma -C #{fetch(:puma_conf)}"
     end
   end
 
