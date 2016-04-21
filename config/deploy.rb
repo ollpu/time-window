@@ -38,7 +38,71 @@ namespace :puma do
   end
 
   before :start, :make_dirs
+  
+  Rake::Task['start'].clear
+  desc 'Start the puma server'
+  task :start do
+    on roles(:web) do
+      execute "
+      /home/#{fetch(:user)}/.rvm/scripts/rvm &&\
+      cd #{fetch(:deploy_to)}/current &&\
+      bundle exec puma -C #{fetch(:puma_conf)}"
+    end
+  end
+
+  Rake::Task['restart'].clear
+  desc 'Restart the puma server'
+  task :restart do
+    on roles(:web) do
+      if capture("[ -S #{fetch(:puma_socket)} ] && echo '1' || echo '0'") == '1' &&
+         capture("[ -f #{fetch(:puma_pid)} ] && echo '1' || echo '0'") == '1'
+        debug "Hot-restarting puma..."
+        execute "kill -s SIGUSR2 `cat #{fetch(:puma_pid)}`"
+        debug "Doublechecking the process restart..."
+        sleep 5
+        if capture("[ -S #{fetch(:puma_socket)} ] && echo '1' || echo '0'") == '1'
+          debug "Restart success!"
+        else
+          debug "Failed! Trying to cold reboot"
+          invoke 'puma:start'
+        end
+      else
+        debug "Server not running. Starting..."
+        invoke 'puma:start'
+      end
+    end
+  end
+
+  Rake::Task['stop'].clear
+  desc 'Stop the puma server'
+  task :stop do
+    on roles(:web) do
+      pid = if capture("[ -f #{fetch(:puma_pid)} ] && echo '1' || echo '0'") == '1'
+        capture "cat #{fetch(:puma_pid)}"
+      elsif capture("[ -f #{fetch(:puma_state)} ] && echo '1' || echo '0'") == '1'
+        capture "cat #{fetch(:puma_state)} | sed -n 2p | awk -F ' ' '{print $2}'"
+      end
+      execute "rm -f #{fetch(:puma_pid)}"
+      execute "rm -f #{fetch(:puma_socket)}"
+      execute "rm -f #{fetch(:puma_state)}"
+      execute "kill -s SIGTERM #{pid}"
+    end
+  end
+  
+  Rake::Task['status'].clear
+  desc 'Check puma server status'
+  task :status do
+    on roles(:web) do
+      if capture("[ -S #{fetch(:puma_socket)} ] && echo '1' || echo '0'") == '1' &&
+         capture("[ -f #{fetch(:puma_pid)} ] && echo '1' || echo '0'") == '1'
+        debug 'Puma server is running'
+      else
+        debug 'Puma server is down!'
+      end
+    end
+  end
 end
+
 
 namespace :deploy do
   desc "Make sure local git is in sync with remote."
@@ -49,14 +113,6 @@ namespace :deploy do
         puts "Run `git push` to sync changes."
         exit
       end
-    end
-  end
-
-  desc 'Initial Deploy'
-  task :initial do
-    on roles(:app) do
-      before 'deploy:restart', 'puma:start'
-      invoke 'deploy'
     end
   end
 
