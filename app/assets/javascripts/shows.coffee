@@ -57,7 +57,7 @@ show_part_time_hooks = ->
     row = $(this).parent().parent()
     total = $('#total-time')
     val = parseInt(total.data('seconds')) - parseInt(
-          row.find('.show_part_time').data('seconds'))
+          row.find('.show-part-time').data('seconds'))
     total.html(seconds_string(val))
          .data('seconds', val)
     row.remove()
@@ -65,7 +65,7 @@ show_part_time_hooks = ->
   # When a time-field is blurred (focused out of), it's format will be parsed
   # and then output again, creating a uniform format of notation and fixing any
   # potential errors
-  $('.show_part_time').unbind('blur')
+  $('.show-part-time').unbind('blur')
   .blur ->
     me = $(this)
     t = parse_time_t me.val()
@@ -73,7 +73,7 @@ show_part_time_hooks = ->
     total = parseInt($('#total-time').data('seconds'))
     total -= me.data('seconds')
     me.data('seconds', time_seconds(t))
-      .next('.show_part_seconds').val(time_seconds(t))
+      .next('.show-part-seconds').val(time_seconds(t))
     total += me.data('seconds')
     $('#total-time').html(seconds_string(total))
                     .data('seconds', total)
@@ -87,13 +87,13 @@ load = ->
     $('#show-parts-tbody').append $('#new-show-part-template').data('template')
     show_part_time_hooks()
   show_part_time_hooks()
-  $('#new-show-parts-tbody').sortable({
+  $('#show-parts-tbody').sortable({
     axis: 'y'
   })
   # Get initial total
   total = 0
-  $('.show_part_time').each ->
-    val = parseInt($(this).next('.show_part_seconds').val())
+  $('.show-part-time').each ->
+    val = parseInt($(this).next('.show-part-seconds').val())
     $(this).val(seconds_string(val))
            .data('seconds', val)
     total += val

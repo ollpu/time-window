@@ -3,9 +3,6 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 
-.show_part_time {
-  width: 5em;
-}
 #show-show {
   display: flex;
   flex-direction: row;
@@ -13,7 +10,7 @@
   align-items: stretch;
 }
 
-.edit_show {
+.edit_show { // Rails automatically generates these with underscores :(
   width: 24em;
   #show-parts {
     border: 4px solid #BBB;
@@ -21,13 +18,22 @@
     display: inline-block;
     min-width: 16em;
     min-height: 1em;
-    max-height: 80%;
     th {
       text-align: left;
     }
-    
     .show-part-action {
       color: #767676;
+    }
+    .show-part-time {
+      width: 5em;
+    }
+    .name-column {
+      width: 100%;
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+      }
     }
   }
   #show_title {
@@ -38,6 +44,8 @@
     padding: 0px 3px;
     font-size: 24px;
     width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box; // I like Firefox, but what is this...
   }
   #show-actions {
     .remove-show {
@@ -54,16 +62,15 @@
   margin: 0.8em 0;
   padding: 0;
   list-style-type: none;
-  @mixin owner-icon($text, $color) {
-    content: $text;
-    color: $color;
-    font-family: "Material Icons";
-    position: absolute;
-    font-size: 22px;
-    margin-left: -1.5em;
-  }
   .email {
-    padding-left: 2.5em;
+    @mixin owner-icon($text, $color) {
+      content: $text;
+      color: $color;
+      font-family: "Material Icons";
+      font-size: 22px;
+      vertical-align: middle;
+      padding: 0.4em;
+    }
     &::before {
       @include owner-icon("account_circle", #{#767676});
     }
