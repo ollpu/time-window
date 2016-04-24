@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160419123641) do
+ActiveRecord::Schema.define(version: 20160424161723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20160419123641) do
     t.string   "urlid"
     t.integer  "owners",     default: [],              array: true
   end
+
+  add_index "shows", ["owners"], name: "index_shows_on_owners", using: :gin
 
   create_table "users", force: :cascade do |t|
     t.string   "email"
