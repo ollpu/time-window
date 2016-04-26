@@ -13,6 +13,25 @@ seconds_string = (num) ->
   t[0] = t[1] // 60
   t[1] = t[1]  % 60
   twoDigit(t[0]) + ":" + twoDigit(t[1]) + ":" + twoDigit(t[2])
+  
+parse_24h_t = (str) ->
+  str = "" + str # Convert to string
+  components = str.replace(/[^0-9:]/g, '').split(":")
+  # Unify duration format
+  t = [0,0,0]
+  s = components.length
+  t[2] = parseInt(components[s-1]) if components[s-1]?
+  t[2] = 0 if isNaN(t[2])
+  t[1] += t[2] // 60
+  t[2] = t[2]%60
+  t[1] += parseInt(components[s-2]) if components[s-2]?
+  t[1] = 0 if isNaN(t[1])
+  t[0] += t[1] // 60
+  t[1] = t[1]%60
+  t[0] += parseInt(components[s-3]) if components[s-3]?
+  t[0] = 0 if isNaN(t[0])
+  t[0] = t[0] % 24
+  t
 # ------------
 
 # --- Host-object. Contains all global values for the cue player ---
@@ -28,6 +47,7 @@ seconds_string = (num) ->
   socket: null
   timedif_start: 0
   timedif: 0
+  timer_timeout: -1
 # ------------
 
 # --- Refresh/restore time displays in cues and the master clock view ---
@@ -136,7 +156,7 @@ start_ticker = ->
   host.ticker_start = time_now()
   # Resuming from pause: Decrease the time to the next step by how much was
   # timed over before pausing (i.e. Paused @ 10.765 -> wait for 765ms less)
-  host.ticker_elapsed = -host.ticker_over
+  host.ticker_elapsed = - host.ticker_over
   host.ticker_over = 0
   set_play on
   schedule_tick(tick)
@@ -146,6 +166,21 @@ pause_ticker = ->
   host.ticker_over = actual - host.ticker_elapsed
   set_play off
 # ------------
+
+timer_exec = ->
+  $('#live-view .controls .timer').html('timer_off')
+  host.timer_timeout = -1
+  start_ticker()
+
+timer = (time) ->
+  $('#live-view .controls .timer').html('timer')
+  host.timer_timeout =
+    setTimeout timer_exec, time - Date.now()
+
+cancel_timer = ->
+  clearTimeout(host.timer_timeout)
+  host.timer_timeout = -1
+  $('#live-view .controls .timer').html('timer_off')
 
 # --- Load. Executed when the page is loaded (via Tubolinks or otherwise) ---
 # Defines all hooks for controls and cue buttons, and initializes the logic
@@ -191,8 +226,18 @@ load = ->
   
   controls.find('.timer').click (e) ->
     e.preventDefault()
-    
-  
+    if host.timer_timeout == -1
+      input = prompt('Enter time for scheduled show play start (format hh:mm:ss).\nIf it is set before the current time, it will start the next day.', '00:00:00')
+      if input != null
+        t = parse_24h_t input
+        now = new Date();
+        schedule = new Date();
+        schedule.setHours(t[0], t[1], t[2], 0)
+        if now > schedule
+          schedule.setTime(schedule.getTime() + 86400000) # Increment by one day
+        timer schedule
+    else
+      cancel_timer()
   controls.find('.stop').click (e) ->
     e.preventDefault()
     if confirm($(this).data('confirm-msg'))
