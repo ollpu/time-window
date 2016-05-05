@@ -89,14 +89,14 @@ load = ->
           client.live_indicator.html('--:--:--')
           part_name = $('#client-part-name')
           part_name.html(part_name.data('wait-start'))
-          $('#client-next-part').html("Seuraava: -")
+          $('#client-next-part').html("Next: -")
         else
           # Received data from host
           client.ticker_remaining = data['remaining']
           refresh_indicator()
           set_play data['play'], data['over']
           $('#client-part-name').html(data['cue_name'])
-          $('#client-next-part').html("Seuraava: " +
+          $('#client-next-part').html("Next: " +
             if data['next_cue']
               data['next_cue_name']
             else
