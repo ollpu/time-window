@@ -122,7 +122,7 @@ load = ->
     $('#add-owner-button').click()
     $.post(me.prop('action'), me.serialize(), ->
       $('#manage-owners').trigger 'close-modal'
-    ).fail (xhr, status) ->
+    ).fail (xhr, status, error) ->
       if xhr.status == 422
         # Some emails were invalid
         $('#owners-list').html(xhr.responseText)
@@ -130,7 +130,7 @@ load = ->
         show_owners_hooks()
       else
         # Unhandleable error
-        $('#manage-owners').trigger 'modal-error', "An unexpected error occured: #{status}"
+        $('#manage-owners').trigger 'modal-error', "An unexpected error occurred: #{error}"
   
 # Turbolinks
 $(document).on('turbolinks:load', load)
