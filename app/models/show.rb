@@ -48,7 +48,7 @@ class Show < ApplicationRecord
   end
   
   def set_owners_by_emails emails, ids = []
-    owners = Array(ids)
+    self.owners = Array(ids)
     add_owners_by_emails emails
   end
   
@@ -60,7 +60,7 @@ class Show < ApplicationRecord
   def add_owner_by_email email
     user = User.find_by(email: email)
     if user.present?
-      owners |= [user.id]
+      self.owners |= [user.id]
       true
     else
       errors.add(:owners, "user with email \"#{email}\" was not found")
