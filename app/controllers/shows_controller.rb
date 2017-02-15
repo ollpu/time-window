@@ -43,6 +43,7 @@ class ShowsController < ApplicationController
   
   def regen # Regenerate urlid for show
     @show = Show.find(params[:id])
+    authorize @show
     @show.generate_urlid
     @show.save
     redirect_to @show

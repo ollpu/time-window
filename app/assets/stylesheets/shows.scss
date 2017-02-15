@@ -63,6 +63,7 @@
   padding: 0;
   list-style-type: none;
   .email {
+    cursor: pointer;
     @mixin owner-icon($text, $color) {
       content: $text;
       color: $color;

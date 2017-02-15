@@ -57,6 +57,10 @@
   .controls {
     #live-indicator {
       font-size: 64px;
+      line-height: 0.95;
+    }
+    #timer-indicator {
+      font-size: 18px;
     }
     text-align: center;
     display: inline-block;

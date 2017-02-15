@@ -33,9 +33,9 @@
     margin-top: 0.25em;
     transition-duration: 180ms;
     &:not([type^='submit']) {
-      width: calc(100% - #{$padding*2});
+      width: 100%;
       box-shadow: 0 0 2px rgba(black, 0.2) inset;
-      
+      box-sizing: border-box;
       &:hover {
         box-shadow: 0 0 2px rgba(black, 0.2);
       }
@@ -46,9 +46,17 @@
           box-shadow: 0 0 2px rgba($ac_color, 0.2);
         }
       }
+      &::selection {
+        background: $ac_color;
+        color: white;
+      }
+      &::-moz-selection {
+        background: $ac_color;
+        color: white;
+      }
     }
     &[type^='submit'] {
-      width: calc(100% + 2px);
+      width: 100%;
       box-shadow: 0 0 2px rgba(black, 0.2);
       &:hover {
         border-color: $ac_color;

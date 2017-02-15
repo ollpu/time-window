@@ -5,6 +5,9 @@ twoDigit = (num) ->
   else
     return "0" + num
 
+t_to_string = (t) ->
+  twoDigit(t[0]) + ":" + twoDigit(t[1]) + ":" + twoDigit(t[2])
+  
 seconds_string = (num) ->
   t = [0,0,0]
   t[2] = parseInt(num)
@@ -12,23 +15,24 @@ seconds_string = (num) ->
   t[2] = t[2]  % 60
   t[0] = t[1] // 60
   t[1] = t[1]  % 60
-  twoDigit(t[0]) + ":" + twoDigit(t[1]) + ":" + twoDigit(t[2])
-  
+  t_to_string t
+
 parse_24h_t = (str) ->
   str = "" + str # Convert to string
-  components = str.replace(/[^0-9:]/g, '').split(":")
-  # Unify duration format
+  components = str.replace('.', ':').replace(/[^0-9:]/g, '').split(":")
   t = [0,0,0]
-  s = components.length
-  t[2] = parseInt(components[s-1]) if components[s-1]?
+  # Seconds
+  t[2] = parseInt(components[2]) if components[2]?
   t[2] = 0 if isNaN(t[2])
   t[1] += t[2] // 60
   t[2] = t[2]%60
-  t[1] += parseInt(components[s-2]) if components[s-2]?
+  # Minutes
+  t[1] += parseInt(components[1]) if components[1]?
   t[1] = 0 if isNaN(t[1])
   t[0] += t[1] // 60
   t[1] = t[1]%60
-  t[0] += parseInt(components[s-3]) if components[s-3]?
+  # Hours
+  t[0] += parseInt(components[0]) if components[0]?
   t[0] = 0 if isNaN(t[0])
   t[0] = t[0] % 24
   t
@@ -169,11 +173,13 @@ pause_ticker = ->
 
 timer_exec = ->
   $('#live-view .controls .timer').html('timer_off')
+  $('#timer-indicator').html("Timer off")
   host.timer_timeout = -1
   start_ticker()
 
-timer = (time) ->
+timer = (time, human) ->
   $('#live-view .controls .timer').html('timer')
+  $('#timer-indicator').html("Starting at #{human}")
   host.timer_timeout =
     setTimeout timer_exec, time - Date.now()
 
@@ -181,6 +187,7 @@ cancel_timer = ->
   clearTimeout(host.timer_timeout)
   host.timer_timeout = -1
   $('#live-view .controls .timer').html('timer_off')
+  $('#timer-indicator').html("Timer off")
 
 # --- Load. Executed when the page is loaded (via Tubolinks or otherwise) ---
 # Defines all hooks for controls and cue buttons, and initializes the logic
@@ -235,7 +242,7 @@ load = ->
         schedule.setHours(t[0], t[1], t[2], 0)
         if now > schedule
           schedule.setTime(schedule.getTime() + 86400000) # Increment by one day
-        timer schedule
+        timer schedule, t_to_string(t)
     else
       cancel_timer()
   controls.find('.stop').click (e) ->
