@@ -45,7 +45,7 @@
 
 <%= render layout: 'layouts/modal', locals:
   { title: 'Manage collaborators', submit_name: 'Save', id: 'manage-owners',
-    url: man_owners_path, item: @show, custom_submit: true } do %>
+    url: man_owners_path(@show), item: @show, custom_submit: true } do %>
   Click on a collaborator to remove them.
   <ul id="owners-list" class="owners">
     <%# Will be populated when modal is opened %>
