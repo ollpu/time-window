@@ -20,5 +20,4 @@ test:
 production:
   <<: *default
   database: time_window_production
-  username: ollpu
-  password: <%= Rails.application.secrets.postgresql_password %>
+  username: tw

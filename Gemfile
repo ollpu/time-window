@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.3.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '>= 5.0.0.beta4', '< 5.1'
+gem 'rails', '>= 5.0.1', '< 5.1'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
@@ -58,7 +58,7 @@ group :development do
 end
 
 # Google Webfonts
-gem 'google-webfonts-rails', '~> 0.0.4'
+# gem 'google-webfonts-rails', '~> 0.0.4'
 
 # Used for sortable
 gem 'jquery-ui-rails'
