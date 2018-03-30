@@ -1,14 +1,14 @@
 # config valid only for current version of Capistrano
-lock '3.7.2'
+lock '3.10.1'
 
-server '188.166.85.219', port: 22, roles: [:web, :app, :db], primary: true
+server '192.168.100.117', port: 22, roles: [:web, :app, :db], primary: true
 
 set :application, 'time-window'
 set :repo_url, 'git@github.com:ollpu/time-window.git'
 
 set :application,     'time-window'
-set :user,            'tw'
-set :puma_threads,    [4, 16]
+set :user,            'pi'
+set :puma_threads,    [1, 1]
 set :puma_workers,    0
 
 
