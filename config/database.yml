@@ -21,3 +21,5 @@ production:
   <<: *default
   database: time_window_production
   username: tw
+  username: <%= ENV['TW_DATABASE_USER'] %>
+  password: <%= ENV['TW_DATABASE_PASSWORD'] %>
