@@ -85,5 +85,5 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   
-  config.action_cable.disable_request_forgery_protection = true
+  config.action_cable.allowed_request_origins = ["https://tw.ollpu.fi", "ws://tw.ollpu.fi", "https://tw.ollpu.fi"]
 end
